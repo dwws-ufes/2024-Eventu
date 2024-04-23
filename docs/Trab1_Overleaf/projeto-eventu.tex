@@ -1,0 +1,317 @@
+% ==============================================================================
+% Modelo para Especificação de Projeto de Software
+% Prof. Vítor E. Silva Souza - NEMO/UFES :: DI/UFES :: PPGI/UFES
+%
+% Baseado em abtex2-modelo-trabalho-academico.tex, v-1.9.2 laurocesar
+% Copyright 2012-2014 by abnTeX2 group at http://abntex2.googlecode.com/ 
+%
+% This work may be distributed and/or modified under the conditions of the LaTeX 
+% Project Public License, either version 1.3 of this license or (at your option) 
+% any later version. The latest version of this license is in
+% http://www.latex-project.org/lppl.txt.
+%
+% IMPORTANTE:
+% Instruções encontram-se espalhadas pelo documento. Para facilitar sua leitura,
+% tais instruções são precedidas por (*) -- utilize a função localizar do seu
+% editor para passar por todas elas.
+% ==============================================================================
+
+% Usa o estilo abntex2, configurando detalhes de formatação e hifenização.
+\documentclass[
+	12pt,				
+	oneside,		
+	a4paper,			
+	english,			% Idioma adicional para hifenização.
+	french,				% Idioma adicional para hifenização.
+	spanish,			% Idioma adicional para hifenização.
+	brazil				% O último idioma é o principal do documento.
+	]{abntex2}
+
+
+%%% Importação de pacotes. %%%
+
+% Conserta o erro "No room for a new \count". 
+% O comando \reserveinserts deve ser comentado ou não, dependendo da versão do LaTeX.
+\usepackage{etex}
+%\reserveinserts{28}
+
+% Usa a fonte Latin Modern.
+\usepackage{lmodern}
+
+% Seleção de códigos de fonte.
+\usepackage[T1]{fontenc}
+
+% Codificação do documento em Unicode.
+\usepackage[utf8]{inputenc}
+
+% Usado pela ficha catalográfica.
+\usepackage{lastpage}
+
+% Indenta o primeiro parágrafo de cada seção.
+\usepackage{indentfirst}
+
+% Controle das cores.
+\usepackage[usenames,dvipsnames]{xcolor}
+
+% Inclusão de gráficos.
+\usepackage{graphicx}
+
+% Melhor controle de leiaute de tabelas.
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{pdflscape}
+
+% Inclusão de páginas em PDF diretamente no documento (para uso nos apêndices).
+\usepackage{pdfpages}
+
+% Para melhorias de justificação.
+\usepackage{microtype}
+
+% Citações padrão ABNT.
+\usepackage[brazilian,hyperpageref]{backref}
+\usepackage[alf]{abntex2cite}	
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}		% Usado sem a opção hyperpageref de backref.
+\renewcommand{\backref}{}										% Texto padrão antes do número das páginas.
+\renewcommand*{\backrefalt}[4]{									% Define os textos da citação.
+	\ifcase #1
+		Nenhuma citação no texto.
+	\or
+		Citado na página #2.
+	\else
+		Citado #1 vezes nas páginas #2.
+	\fi}
+
+% \rm is deprecated and should not be used in a LaTeX2e document
+% http://tex.stackexchange.com/questions/151897/always-textrm-never-rm-a-counterexample
+\renewcommand{\rm}{\textrm}
+
+% Inclusão de símbolos não padrão.
+\usepackage{amssymb}
+\usepackage{eurosym}
+
+% Para utilizar \eqref para referenciar equações.
+\usepackage{amsmath}
+
+% Permite mostrar figuras muito largas em modo paisagem com \begin{sidewaysfigure} ao invés de \begin{figure}.
+\usepackage{rotating}
+
+% Permite customizar listas enumeradas/com marcadores.
+\usepackage{enumitem}
+
+% Permite inserir hiperlinks com \url{}.
+\usepackage{bigfoot}
+\usepackage{hyperref}
+
+% Permite usar o comando \hl{} para evidenciar texto com fundo amarelo. Útil para chamar atenção a itens a fazer.
+\usepackage{soulutf8}
+
+% Colorinlistoftodos package: to insert colored comments so authors can collaborate on the content.
+% (*) Indicar o nome do aluno e substituir o nome do professor se for o caso.
+\usepackage[colorinlistoftodos, textwidth=20mm, textsize=footnotesize]{todonotes}
+\newcommand{\aluno}[1]{\todo[author=\textbf{Aluno},color=green!30,caption={},inline]{#1}}
+\newcommand{\vitor}[1]{\todo[author=\textbf{Vítor},color=red!30,caption={},inline]{#1}}
+
+% Permite inserir espaço em branco condicional (incluído no texto final só se necessário) em macros.
+\usepackage{xspace}
+
+% Permite incluir listagens de código com o comando \lstinputlisting{}.
+\usepackage{listings}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\renewcommand{\lstlistingname}{Listagem}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\lstset{
+	basicstyle=\scriptsize,
+	breaklines=true,
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{mygray}, 
+	rulecolor=\color{black},
+	showstringspaces=false,
+	tabsize=2,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=%
+    {é}{{\'{e}}}1
+    {è}{{\`{e}}}1
+    {ê}{{\^{e}}}1
+    {ë}{{\¨{e}}}1
+    {É}{{\'{E}}}1
+    {Ê}{{\^{E}}}1
+    {û}{{\^{u}}}1
+    {ù}{{\`{u}}}1
+    {â}{{\^{a}}}1
+    {à}{{\`{a}}}1
+    {á}{{\'{a}}}1
+    {ã}{{\~{a}}}1
+    {Á}{{\'{A}}}1
+    {Â}{{\^{A}}}1
+    {Ã}{{\~{A}}}1
+    {ç}{{\c{c}}}1
+    {Ç}{{\c{C}}}1
+    {õ}{{\~{o}}}1
+    {ó}{{\'{o}}}1
+    {ô}{{\^{o}}}1
+    {Õ}{{\~{O}}}1
+    {Ó}{{\'{O}}}1
+    {Ô}{{\^{O}}}1
+    {î}{{\^{i}}}1
+    {Î}{{\^{I}}}1
+    {í}{{\'{i}}}1
+    {Í}{{\~{Í}}}1
+}
+
+
+
+
+%%% Definição de variáveis. %%%
+% (*) Substituir os textos abaixo com as informações apropriadas.
+\titulo{Eventu}
+\autor{Thaliys Antunes Daré, Gabriel Ferrari Wagnitz}
+\local{Vitória, ES}
+\data{\the\year}
+\instituicao{
+	Universidade Federal do Espírito Santo -- UFES
+	\par
+	Centro Tecnológico
+	\par
+	Departamento de Informática}
+\newcommand{\subtitulo}{Documento de Projeto de Sistema}
+\newcommand{\versao}{1.0}
+
+% Define a capa.
+\renewcommand{\imprimircapa}{%
+	\begin{capa}%
+		\center
+		
+		{\ABNTEXchapterfont\large\subtitulo{}}
+		\vfill
+		\begin{center}
+			\ABNTEXchapterfont\bfseries\LARGE\imprimirtitulo
+		\end{center}
+		
+		\vfill
+		\large\imprimirlocal
+		\linebreak
+		\large\imprimirdata
+		\vspace*{1cm}
+	\end{capa}
+}
+
+% Macros específicas do trabalho.
+% (*) Inclua aqui termos que são utilizados muitas vezes e que demandam formatação especial.
+% Exemplo: Java com TM (trademark) em superscript.
+% Use sempre \xspace para que o LaTeX inclua espaço em branco após a macro somente quando necessário.
+\newcommand{\java}{Java\texttrademark\xspace}
+
+
+
+
+%%% Configurações finais de aparência. %%%
+
+% Altera o aspecto de algumas cores.
+\definecolor{blue}{RGB}{41,5,195}
+\definecolor{lightgray}{gray}{0.9}
+
+% Informações do PDF.
+\makeatletter
+\hypersetup{
+	pdftitle={\@title}, 
+	pdfauthor={\@author},
+	pdfsubject={\imprimirpreambulo},
+	pdfcreator={LaTeX with abnTeX2},
+	pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+	colorlinks=true,				% Colore os links (ao invés de usar caixas).
+	linkcolor=blue,					% Cor dos links.
+	citecolor=blue,					% Cor dos links na bibliografia.
+	filecolor=magenta,				% Cor dos links de arquivo.
+	urlcolor=blue,					% Cor das URLs.
+	bookmarksdepth=4
+}
+\makeatother
+
+% Espaçamentos entre linhas e parágrafos.
+\setlength{\parindent}{1.3cm}
+\setlength{\parskip}{0.2cm}
+
+
+
+%%% Páginas iniciais do documento: capa, folha de rosto, ficha, resumo, tabelas, etc. %%%
+
+% Compila o índice.
+\makeindex
+
+% Inicia o documento.
+\begin{document}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing
+
+% Inclui o brasão da UFES.
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.055]{brasao.jpg}
+  \label{ppts3}
+\end{figure} 
+
+% Capa do trabalho.
+\imprimircapa
+
+
+% (*) Incluir linhas no registro de alterações a cada nova versão.
+\begin{center}
+	{\large\bfseries Registro de Alterações:}
+	
+	\vspace{0.5cm}
+	\begin{tabular}{|c|p{45mm}|c|p{60mm}|} \hline
+		
+		\textbf{Versão} & \textbf{Responsável} & \textbf{Data}  & \textbf{Alterações} \\ \hline   
+		
+		1.0  & Gabriel Ferrari Wagnitz & 21/04/2024 & Versão inicial. \\\hline 
+	\end{tabular}
+\end{center}
+\newpage
+
+
+
+%%% Início da parte de conteúdo do documento. %%%
+% Marca o início dos elementos textuais.
+\textual
+
+% Inclusão dos capítulos como seções (sem quebra de página).
+\begingroup
+\let\clearpage\relax
+
+\input{capitulos/ch1-introducao}
+\vspace*{1.5cm}
+
+\input{capitulos/ch2-plataforma}
+\vspace*{1.5cm}
+
+\input{capitulos/ch3-arquitetura}
+\vspace*{1.5cm}
+
+\input{capitulos/ch4-frameweb}
+\endgroup
+
+
+
+%%% Páginas finais do documento: bibliografia e anexos. %%%
+% Finaliza a parte no bookmark do PDF para que se inicie o bookmark na raiz e adiciona espaço de parte no sumário.
+\phantompart
+
+% Marca o início dos elementos pós-textuais.
+\postextual
+
+% Referências bibliográficas
+\bibliography{bibliografia}
+
+% Índice remissivo.
+\phantompart
+\printindex
+
+% Fim do documento.
+\end{document}

@@ -1,0 +1,81 @@
+% ==============================================================================
+% Projeto de Sistema - Nome do Aluno
+% Capítulo 2 - Plataforma de Desenvolvimento
+% ==============================================================================
+\chapter{Plataforma de Desenvolvimento}
+\label{sec-plataforma}
+\vspace{-1cm}
+Para o projeto serão utilizadas as tecnologias e bibliotecas recomendadas pelo Spring Framework em seu projeto \textit{Spring Initializr}\footnote{https://start.spring.io/}. O \textit{Spring Initializr} é uma ferramenta do Spring para facilitar a configuração inicial do projeto, facilitando a inclusão de bibliotecas para diversos propósitos.
+
+
+%=======================================================================================================
+%			Tabela de Plataforma de Desenvolvimento e Tecnologias Utilizadas
+%=======================================================================================================
+
+Na Tabela~\ref{tabela-plataforma} são listadas as tecnologias utilizadas no desenvolvimento da ferramenta, bem como o propósito de sua utilização.
+
+\begin{footnotesize}
+\begin{longtable}{|p{1.8cm}|c|p{5cm}|p{6.3cm}|}
+	\caption{Plataforma de Desenvolvimento e Tecnologias Utilizadas.}	
+	\label{tabela-plataforma}\\\hline
+
+	\rowcolor{lightgray}
+	\textbf{Tecnologia} & \textbf{Versão} & \textbf{Descrição} & \textbf{Propósito} \\\hline 
+	\endfirsthead
+	\hline
+	\rowcolor{lightgray}
+	\textbf{Tecnologia} & \textbf{Versão} & \textbf{Descrição} & \textbf{Propósito} \\\hline 
+	\endhead
+		
+	Spring Framework & 3.2.4 & Framework de inversão de controle e injeção de dependência. Possui um conjunto de APIs para auxiliar em diversas etapas do desenvolvimento de grandes sistemas web & Redução da complexidade do desenvolvimento, implantação e gerenciamento de aplicações Web a partir de seus componentes de infra-estrutura prontos para o uso. \\ \hline
+
+	Java & 21 & Linguagem de programação orientada a objetos e independente de plataforma. & Escrita do código-fonte das classes que compõem o sistema. \\\hline
+	
+	Spring Data JPA & 3.2.4 & API para persistência de dados por meio de mapeamento objeto/relacional. & Persistência dos objetos de domínio sem necessidade de escrita dos comandos SQL. \\\hline
+  
+	Thymeleaf & 3.1.2 &  Ferramenta para criação de (\textit{templates}) XML/XHTML/HTML5 integrada ao Spring & Reutilização da estrutura visual comum às paginas, facilitando a manutenção do padrão visual do sistema. \\\hline
+
+    TailwindCSS & 3.4.3 & Framework de classes CSS processadas em tempo de compilação & Facilitar a estilização de páginas web responsivas \\\hline
+		
+	MySQL Server & 8.3 & Sistema Gerenciador de Banco de Dados Relacional gratuito. & Armazenamento dos dados manipulados pela ferramenta. \\\hline
+	
+	Tomcat & 10.1.19 & Servidor de Aplicações Imbutido no Spring Boot. & Fornecimento de implementação das APIs citadas acima e hospedagem da aplicação Web, dando acesso aos usuários via HTTP. \\\hline
+\end{longtable}
+\end{footnotesize}
+
+
+
+
+
+
+%=======================================================================================================
+%			Tabela de Softwares de Apoio ao Desenvolvimento do Projeto
+%=======================================================================================================
+
+Na Tabela~\ref{tabela-software} vemos os softwares que apoiaram o desenvolvimento de documentos e também do código fonte.
+
+\begin{footnotesize}
+\begin{longtable}{|p{2.5cm}|c|p{5cm}|p{5.5cm}|}
+	\caption{Softwares de Apoio ao Desenvolvimento do Projeto}	
+	\label{tabela-software}\\\hline
+	
+	\rowcolor{lightgray}
+	\textbf{Tecnologia} & \textbf{Versão} & \textbf{Descrição} & \textbf{Propósito} \\\hline 
+	\endfirsthead
+	\hline
+	\rowcolor{lightgray}
+	\textbf{Tecnologia} & \textbf{Versão} & \textbf{Descrição} & \textbf{Propósito} \\\hline 
+	\endhead
+	 
+	FrameWeb Plugin & 1.0 & Plugin do VisualParadigm para o método FrameWeb. & Criação dos modelos de Entidades, Aplicação, Persistência e Navegação. \\\hline
+
+    VisualParadigm & 17.1 & Ferramenta de modelagem UML & Criação de Diagramas de Classe  \\\hline
+
+	Overleaf  & - & Editor Online do \LaTeX & Documentação do projeto arquitetural do sistema. \\\hline           
+	
+	Apache Maven & 3.6 & Ferramenta de gerência/construção de projetos de software. & Obtenção e integração das dependências do projeto. \\\hline
+	
+	Spring Initializr & - & Ferramenta de geração inicial de projeto Spring. & Automação de configuração \\\hline
+ 
+\end{longtable}
+\end{footnotesize}
