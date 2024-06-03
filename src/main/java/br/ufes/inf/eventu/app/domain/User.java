@@ -1,15 +1,14 @@
 package br.ufes.inf.eventu.app.domain;
 
 import br.ufes.inf.eventu.app.domain.enums.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -26,6 +25,7 @@ public class User {
 
     @Setter
     @Getter
+    @Column(unique = true)
     private String email;
 
     @Setter
@@ -47,4 +47,7 @@ public class User {
     @Setter
     @Getter
     private String passwordSalt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Getter @Setter private Set<AttractionUser> AttractionUsers = new HashSet<>();
 }
