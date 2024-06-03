@@ -2,11 +2,9 @@ package br.ufes.inf.eventu.app;
 
 import br.ufes.inf.eventu.app.domain.User;
 import br.ufes.inf.eventu.app.domain.Attraction;
-import br.ufes.inf.eventu.app.domain.AttractionUser;
 import br.ufes.inf.eventu.app.domain.enums.UserRole;
 import br.ufes.inf.eventu.app.persistence.UserDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
-import br.ufes.inf.eventu.app.persistence.AttractionUserDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,24 +28,21 @@ public class AppApplication {
 	@Bean
 	public CommandLineRunner demo(
 		UserDAO repositoryUser,
-		AttractionDAO repositoryAttractionDAO,
-		AttractionUserDAO repositoryAttractionUserDAO) {
+		AttractionDAO repositoryAttractionDAO) {
 		return (args) -> {
-			setUp(repositoryUser, repositoryAttractionDAO, repositoryAttractionUserDAO);
+			setUp(repositoryUser, repositoryAttractionDAO);
 
 			var user = repositoryUser.findByEmail("admin@gmail.com");
-			System.out.println(user.getAttractionUsers().stream().findFirst().get().getAttraction().getDescription());
+			System.out.println(user.getRegisteredAttractions().stream().findFirst().get().getDescription());
 		};
 	}
 
 	public static void setUp(
 			UserDAO repositoryUser,
-			AttractionDAO repositoryAttractionDAO,
-			AttractionUserDAO repositoryAttractionUserDAO) throws Exception {
+			AttractionDAO repositoryAttractionDAO) throws Exception {
 
 		var user = createUserAdmin(repositoryUser);
 		var attraction = createAttraction(repositoryAttractionDAO);
-		createAttractionUser(repositoryAttractionUserDAO, user, attraction);
 	}
 
 	public static User createUserAdmin(UserDAO repository) throws Exception {
@@ -91,16 +86,6 @@ public class AppApplication {
 		return repository.save(attraction);
 	}
 
-	public static void createAttractionUser(
-			AttractionUserDAO repository,
-			User user,
-			Attraction attraction) throws Exception {
-
-		var attractionUser = new AttractionUser();
-		attractionUser.setAttraction(attraction);
-		attractionUser.setUser(user);
-		repository.save(attractionUser);
-	}
 
 	public static String MD5(String password) throws Exception{
 		var messageDigest = MessageDigest.getInstance("MD5");

@@ -2,11 +2,14 @@ package br.ufes.inf.eventu.app.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +34,21 @@ public class Attraction {
 
     @Getter @Setter private LocalTime createdAt;
 
-    @ManyToOne // Indicates a Many-to-One relationship
-    @JoinColumn(name = "attraction_type_id") // Name of the foreign key column
+    @ManyToOne
+    @JoinColumn(name = "attraction_type_id")
     @Getter @Setter private AttractionType attractionType;
 
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
     @Getter @Setter private Set<AttractionTime> attractionTimes = new HashSet<>();
+
+    @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
+    @Getter @Setter private Set<File> attachments = new HashSet<>();
+
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "attraction_user",
+        joinColumns = @JoinColumn(name = "attraction_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @Getter @Setter private Set<User> registeredParticipants = new HashSet<>();
 }

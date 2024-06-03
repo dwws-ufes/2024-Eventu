@@ -21,4 +21,8 @@ public class File {
     @Getter @Setter private AttachmentType attachmentType;
 
     @Getter @Setter private String mimetype;
+
+    @ManyToOne 
+    @JoinColumn(name = "attraction_id") 
+    @Getter @Setter private Attraction attraction;
 }

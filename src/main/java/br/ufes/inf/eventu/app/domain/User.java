@@ -48,6 +48,11 @@ public class User {
     @Getter
     private String passwordSalt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Getter @Setter private Set<AttractionUser> AttractionUsers = new HashSet<>();
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "attraction_user",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "attraction_id")
+    )
+    @Getter @Setter private Set<Attraction> registeredAttractions = new HashSet<>();
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +24,13 @@ public class Checkin {
     @Setter
     @Getter
     private LocalTime timestamp;
+
+    @ManyToOne
+    @JoinColumn(name = "attraction_time_id")
+    @Getter @Setter private AttractionTime attractionTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @Getter @Setter private User user;
 }
+

@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -23,8 +21,8 @@ public class AttractionTime {
     @Getter
     private Long id;
 
-    @ManyToOne // Indicates a Many-to-One relationship
-    @JoinColumn(name = "attraction_id") // Name of the foreign key column
+    @ManyToOne
+    @JoinColumn(name = "attraction_id")
     @Getter @Setter private Attraction attraction;
 
     @Setter
@@ -34,4 +32,8 @@ public class AttractionTime {
     @Setter
     @Getter
     private LocalTime finish;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    @Getter @Setter private Location location;
 }
