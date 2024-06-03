@@ -1,7 +1,7 @@
 package br.ufes.inf.eventu.app.persistence;
 
 import br.ufes.inf.eventu.app.domain.File;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FileDAO extends CrudRepository<File, Long> {
+public interface FileDAO extends JpaRepository<File, Long> {
 }

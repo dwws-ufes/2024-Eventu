@@ -8,14 +8,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Speaker {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Getter private Long id;
+    private Long id;
 
-    @Getter @Setter private String name;
+    @Setter private String name;
 
-    @Getter @Setter private String description;
+    @Setter private String description;
 }

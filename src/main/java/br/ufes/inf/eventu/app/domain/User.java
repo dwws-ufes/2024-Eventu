@@ -10,42 +10,36 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Getter
     private Long id;
 
     @Setter
-    @Getter
     private String fullName;
 
     @Setter
-    @Getter
     @Column(unique = true)
     private String email;
 
     @Setter
-    @Getter
     private UserRole role;
 
     @Setter
-    @Getter
+    @Column(name = "dateBirth", columnDefinition = "DATE")
     private LocalDate dateBirth;
 
     @Setter
-    @Getter
     private String institution;
 
     @Setter
-    @Getter
     private String password;
 
     @Setter
-    @Getter
     private String passwordSalt;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
@@ -54,5 +48,5 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "attraction_id")
     )
-    @Getter @Setter private Set<Attraction> registeredAttractions = new HashSet<>();
+    @Setter private Set<Attraction> registeredAttractions = new HashSet<>();
 }

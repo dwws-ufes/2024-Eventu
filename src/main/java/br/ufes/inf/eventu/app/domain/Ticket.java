@@ -9,20 +9,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Getter
     private Long id;
 
     @Setter
-    @Getter
     private TicketStatus status;
 
     @Setter
-    @Getter
     private String uuid;
 }

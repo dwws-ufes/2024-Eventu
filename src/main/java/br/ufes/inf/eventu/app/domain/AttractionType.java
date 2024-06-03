@@ -10,20 +10,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class AttractionType {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Getter
     private Long id;
 
     @Setter
-    @Getter
     private String name;
 
     @Setter
-    @Getter
     private String description;
 }

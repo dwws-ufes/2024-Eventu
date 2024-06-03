@@ -6,23 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class File {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Getter private Long id;
+    private Long id;
 
-    @Getter @Setter private String name;
+    @Setter private String name;
 
-    @Getter @Setter private String path;
+    @Setter private String path;
 
     @Enumerated(EnumType.ORDINAL)
-    @Getter @Setter private AttachmentType attachmentType;
+    @Setter private AttachmentType attachmentType;
 
-    @Getter @Setter private String mimetype;
+    @Setter private String mimetype;
 
     @ManyToOne 
-    @JoinColumn(name = "attraction_id") 
-    @Getter @Setter private Attraction attraction;
+    @JoinColumn(name = "attraction_id")
+    @Setter private Attraction attraction;
 }
