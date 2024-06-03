@@ -33,7 +33,7 @@ public class AppApplication {
 		AttractionDAO repositoryAttractionDAO,
 		AttractionUserDAO repositoryAttractionUserDAO) {
 		return (args) -> {
-			//setUp(repositoryUser, repositoryAttractionDAO, repositoryAttractionUserDAO);
+			setUp(repositoryUser, repositoryAttractionDAO, repositoryAttractionUserDAO);
 
 			var user = repositoryUser.findByEmail("admin@gmail.com");
 			System.out.println(user.getAttractionUsers().stream().findFirst().get().getAttraction().getDescription());
