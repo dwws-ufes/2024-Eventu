@@ -11,6 +11,5 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("title", "Página Inicial");
         return "redirect:/attractions";
-        /*return "index";*/
     }
 }

@@ -8,7 +8,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -23,22 +25,16 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(a -> a
-						.requestMatchers("/").permitAll()
-						.requestMatchers("/attractions").permitAll()
-						//.requestMatchers("/tickets/**").hasRole(UserRole.ADMIN.name())
+						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+						.requestMatchers("/", "/attractions", "/login", "/logout").permitAll()
 						.anyRequest()
 						.authenticated())
 				.httpBasic(withDefaults())
-				.formLogin(withDefaults())
-//				.formLogin(formLogin -> formLogin
-//						.loginPage("/login")
-//						.defaultSuccessUrl("/", true)
-//						.permitAll()
-//				)
-				.logout(logout -> logout
-						.logoutUrl("/logout")
-						.logoutSuccessUrl("/")
-						.permitAll());
+				.formLogin(l -> l.loginPage("/login")
+						.loginProcessingUrl("/login")
+						.defaultSuccessUrl("/", true)
+						.permitAll())
+				.logout(l -> l.logoutUrl("/logout").permitAll());
 		return http.build();
 	}
 
