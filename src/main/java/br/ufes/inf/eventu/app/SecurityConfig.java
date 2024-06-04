@@ -1,6 +1,5 @@
 package br.ufes.inf.eventu.app;
 
-import br.ufes.inf.eventu.app.domain.enums.UserRole;
 import br.ufes.inf.eventu.app.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,12 +23,22 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(a -> a
-						.requestMatchers("/tickets/**").hasRole(UserRole.ADMIN.name())
+						.requestMatchers("/").permitAll()
+						.requestMatchers("/attractions").permitAll()
+						//.requestMatchers("/tickets/**").hasRole(UserRole.ADMIN.name())
 						.anyRequest()
 						.authenticated())
 				.httpBasic(withDefaults())
 				.formLogin(withDefaults())
-				.logout(withDefaults());
+//				.formLogin(formLogin -> formLogin
+//						.loginPage("/login")
+//						.defaultSuccessUrl("/", true)
+//						.permitAll()
+//				)
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/")
+						.permitAll());
 		return http.build();
 	}
 

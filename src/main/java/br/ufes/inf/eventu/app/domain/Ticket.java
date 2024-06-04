@@ -1,10 +1,8 @@
 package br.ufes.inf.eventu.app.domain;
 
 import br.ufes.inf.eventu.app.domain.enums.TicketStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,4 +21,9 @@ public class Ticket {
 
     @Setter
     private String uuid;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @Nullable
+    @Setter private User user;
 }

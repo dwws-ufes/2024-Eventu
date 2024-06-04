@@ -1,0 +1,18 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org"
+     layout:decorate="~{layout/base}"
+     layout:fragment="content">
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" th:each="attraction: ${attractions}">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${attraction.name}">Card title</h5>
+                    <p class="card-text" th:text="${attraction.description}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

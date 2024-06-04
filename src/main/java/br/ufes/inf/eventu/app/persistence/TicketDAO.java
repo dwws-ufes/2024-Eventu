@@ -11,4 +11,7 @@ public interface TicketDAO extends JpaRepository<Ticket, Long> {
 
     @Query("SELECT t FROM Ticket t WHERE t.uuid = :code")
     List<Ticket> retrieveByTicketCode(String code);
+
+    @Query(value = "SELECT t FROM Ticket t JOIN t.user u WHERE u.id = :userId", nativeQuery = true)
+    List<Ticket> retrieveByUserId(long userId);
 }
