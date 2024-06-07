@@ -1,0 +1,64 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layout/base_login}"
+     layout:fragment="content"
+     xmlns:th="http://www.thymeleaf.org">
+
+    <div class="d-flex align-items-center py-4">
+        <div class="form-signin w-100 m-auto">
+            <form name="f" th:action="@{/account/register}" th:object="${userModel}" method="post">
+                <h1 class="h3 mb-3 fw-normal">Cadastro</h1>
+
+                <div th:if="${param.error}" class="alert alert-error" th:text="${error}"></div>
+
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating is-invalid">
+                        <input type="text" class="form-control" id="fullName"
+                               th:classappend="${#fields.hasErrors('fullName') ? 'is-invalid' : ''}"
+                               th:field="*{fullName}"/>
+                        <label for="fullName">Nome completo</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="invalid-feedback">error</div>
+                </div>
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating is-invalid">
+                        <input type="date" class="form-control" id="dateBirth"
+                               th:classappend="${#fields.hasErrors('dateBirth') ? 'is-invalid' : ''}"
+                               th:field="*{dateBirth}"/>
+                        <label for="dateBirth">Data de nascimento</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('dateBirth')}" th:errors="*{dateBirth}" class="invalid-feedback">error</div>
+                </div>
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating is-invalid">
+                        <input type="text" class="form-control" id="institution"
+                               th:classappend="${#fields.hasErrors('institution') ? 'is-invalid' : ''}"
+                               th:field="*{institution}"/>
+                        <label for="institution">Instituição</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('institution')}" th:errors="*{institution}" class="invalid-feedback">error</div>
+                </div>
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating is-invalid">
+                        <input type="email" class="form-control" id="email"
+                               th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+                               th:field="*{email}"/>
+                        <label for="Email">email</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback">error</div>
+                </div>
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating is-invalid">
+                        <input type="password" class="form-control" id="password"
+                               th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}"
+                               th:field="*{password}"/>
+                        <label for="password">Senha</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback">error</div>
+                </div>
+
+                <button class="btn btn-primary w-100 py-2" type="submit">Registrar</button>
+                <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
+            </form>
+        </div>
+    </div>
+</div>

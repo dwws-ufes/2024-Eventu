@@ -33,9 +33,9 @@
                     <input class="form-control" type="search" placeholder="Pesquisar" aria-label="Search">
                 </form>
                 <div class="text-end">
-                    <a href="/logout" class="btn btn-outline me-2" sec:authorize="isAuthenticated()">Sair</a>
-                    <a href="/login" class="btn btn-outline me-2" sec:authorize="!isAuthenticated()">Entrar</a>
-                    <a href="/register" class="btn btn-warning me-2"sec:authorize="!isAuthenticated()">Registrar</a>
+                    <a href="/account/logout" class="btn btn-outline me-2" sec:authorize="isAuthenticated()">Sair</a>
+                    <a href="/account/login" class="btn btn-outline me-2" sec:authorize="!isAuthenticated()">Entrar</a>
+                    <a href="/account/register" class="btn btn-warning me-2" sec:authorize="!isAuthenticated()">Registrar</a>
                 </div>
             </div>
         </div>

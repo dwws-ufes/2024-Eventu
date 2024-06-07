@@ -26,15 +26,15 @@ public class SecurityConfig {
 		http
 				.authorizeHttpRequests(a -> a
 						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-						.requestMatchers("/", "/attractions", "/login", "/logout").permitAll()
+						.requestMatchers("/", "/attractions", "/account/register", "/account/login", "/account/logout").permitAll()
 						.anyRequest()
 						.authenticated())
 				.httpBasic(withDefaults())
-				.formLogin(l -> l.loginPage("/login")
+				.formLogin(l -> l.loginPage("/account/login")
 						.loginProcessingUrl("/login")
 						.defaultSuccessUrl("/", true)
 						.permitAll())
-				.logout(l -> l.logoutUrl("/logout").permitAll());
+				.logout(l -> l.logoutUrl("/account/logout").permitAll());
 		return http.build();
 	}
 
