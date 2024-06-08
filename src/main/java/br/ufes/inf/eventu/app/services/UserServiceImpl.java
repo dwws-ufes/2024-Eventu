@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService<User> {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;

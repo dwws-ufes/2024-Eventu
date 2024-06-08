@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Initialization {
 
@@ -18,7 +19,7 @@ public class Initialization {
             AttractionDAO repositoryAttractionDAO) throws Exception {
 
         createUserAdmin(repositoryUser);
-        //createAttraction(repositoryAttractionDAO);
+        createAttraction(repositoryAttractionDAO);
     }
 
     public static void createUserAdmin(UserDAO repository) throws Exception {
@@ -55,23 +56,39 @@ public class Initialization {
         repository.save(user);
     }
 
-    public static Attraction createAttraction(AttractionDAO repository) throws Exception {
-        var attraction = new Attraction();
-        attraction.setName("Palestra IOT");
-        attraction.setDescription("Palestra sobre IOT");
-        attraction.setCreatedAt(LocalTime.now());
-        repository.save(attraction);
+    public static void createAttraction(AttractionDAO repository) throws Exception {
 
-        attraction = new Attraction();
-        attraction.setName("Palestra aprendendo C#");
-        attraction.setDescription("Palestra sobre C#");
-        attraction.setCreatedAt(LocalTime.now());
-        repository.save(attraction);
+        var attractionNames = Arrays.asList(
+                "Palestra IOT",
+                "Workshop de Machine Learning",
+                "Introdução ao Desenvolvimento Web",
+                "Hackathon de Segurança Cibernética",
+                "Palestra sobre Blockchain",
+                "Maratona de Programação",
+                "Workshop de Desenvolvimento Mobile",
+                "Palestra sobre Inteligência Artificial",
+                "Seminário de DevOps",
+                "Curso de Programação Funcional",
+                "Introdução ao Big Data",
+                "Oficina de Realidade Aumentada",
+                "Curso de Programação em Python",
+                "Palestra sobre Computação Quântica",
+                "Workshop de Design UX/UI",
+                "Maratona de Robótica",
+                "Seminário de Cloud Computing",
+                "Palestra sobre Ética na IA",
+                "Hackathon de Jogos Digitais",
+                "Oficina de Testes Automatizados"
+        );
 
-        attraction = new Attraction();
-        attraction.setName("Palestra Java JPA");
-        attraction.setDescription("Palestra sobre Java");
-        attraction.setCreatedAt(LocalTime.now());
-        return repository.save(attraction);
+        if(repository.findAll().stream().anyMatch(x -> attractionNames.contains(x.getName()))) return;
+
+        for (var item : attractionNames){
+            var attractionModel  = new Attraction();
+            attractionModel.setName(item);
+            attractionModel.setDescription(item);
+            attractionModel.setCreatedAt(LocalTime.now());
+            repository.save(attractionModel);
+        }
     }
 }
