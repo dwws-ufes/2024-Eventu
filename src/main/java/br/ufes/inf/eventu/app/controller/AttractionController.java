@@ -2,11 +2,13 @@ package br.ufes.inf.eventu.app.controller;
 
 import br.ufes.inf.eventu.app.core.EventuException;
 import br.ufes.inf.eventu.app.domain.Attraction;
-import br.ufes.inf.eventu.app.domain.User;
+import br.ufes.inf.eventu.app.domain.AttractionType;
 import br.ufes.inf.eventu.app.model.AttractionModel;
-import br.ufes.inf.eventu.app.model.UserModel;
+import br.ufes.inf.eventu.app.model.AttractionTypeModel;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
+import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionService;
+import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,13 @@ public class AttractionController {
     private AttractionDAO attractionDAO;
 
     @Autowired
+    private AttractionTypeDAO attractionTypeDAO;
+
+    @Autowired
     private AttractionService attractionService;
+    
+    @Autowired
+    private AttractionTypeService attractionTypeService;
 
     @GetMapping("")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
@@ -83,4 +91,48 @@ public class AttractionController {
         attributes.addAttribute("registered", "true");
         return "redirect:/attractions/register";
     }
+
+    @GetMapping("/register_type")
+    public String registerType(Model model) {
+        model.addAttribute("title", "Cadastrar");
+        model.addAttribute("attractionTypeModel", new AttractionTypeModel());
+
+        var registeredAttractionTypes =  attractionTypeDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        
+        model.addAttribute("registeredAttractionTypes", registeredAttractionTypes);
+        return "attractions/register_type";
+    }
+
+    @PostMapping("/register_type")
+    public String submitRegisterType(
+            @Valid @ModelAttribute("attractionTypeModel") AttractionTypeModel attractionTypeModel,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
+        model.addAttribute("title", "Cadastrar");
+
+        if (bindingResult.hasErrors())
+            return "attractions/register_type";
+
+        try {
+            var attractionType = new AttractionType();
+            attractionType.setName(attractionTypeModel.getName());
+            attractionType.setDescription(attractionTypeModel.getDescription());
+            attractionTypeService.save(attractionType);
+        } catch (Exception e) {
+            var msg = "Erro ao registrar tipo de atração";
+            if (e instanceof EventuException) msg = e.getMessage();
+            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            return "attractions/register_type";
+        }
+
+        attributes.addAttribute("registered", "true");
+        return "redirect:/attractions/register_type";
+    }
+
 }
