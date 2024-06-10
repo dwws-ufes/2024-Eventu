@@ -4,10 +4,10 @@
      xmlns:th="http://www.thymeleaf.org">
 
     
-    <a class="btn btn-info" href="/attractions/register_type">Tipos de atrações</a>
+    <a class="btn btn-info mb-3" href="/attractions/register_type">Tipos de atrações</a>
 
     <form name="f" th:action="@{/attractions/register}" th:object="${attractionModel}" method="post">
-        <h1 class="h3 mt-3 mb-3 fw-normal">Informe os dados</h1>
+        <h1 class="h3 mb-3 fw-normal">Informe os dados</h1>
 
         <div th:if="${param.registered}" class="alert alert-success alert-dismissible fade show" role="alert">
             Atração cadastrada com sucesso.
@@ -58,6 +58,7 @@
                             <option value="">Selecione...</option>
                             <option th:each="attractionType : ${attractionTypes}" th:value="${attractionType.id}" th:text="${attractionType.name}"></option>
                         </select>
+                        <label for="attractionTypeId">Tipo de Atração</label>
                     </div>
                 </div>
             </div>

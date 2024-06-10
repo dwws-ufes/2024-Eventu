@@ -3,7 +3,7 @@
      layout:fragment="content"
      xmlns:th="http://www.thymeleaf.org">
 
-    <a class="btn btn-info" href="/attractions/register">Voltar</a>
+    <a class="btn btn-info mb-3" href="/attractions/register">Voltar</a>
 
     <form name="f" th:action="@{/attractions/register_type}" th:object="${attractionTypeModel}" method="post">
         <h1 class="h3 mb-3 fw-normal">Informe os dados</h1>
