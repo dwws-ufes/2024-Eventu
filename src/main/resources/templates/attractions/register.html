@@ -48,7 +48,21 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary py-2" type="submit">Cadastrar</button>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select"
+                                id="attractionTypeId"
+                                th:field="*{attractionTypeId}">
+                            <option value="">Selecione...</option>
+                            <option th:each="attractionType : ${attractionTypes}" th:value="${attractionType.id}" th:text="${attractionType.name}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
     </form>
 </div>
 

@@ -18,4 +18,7 @@ public class AttractionModel {
     @NotBlank(message = "Descrição é obrigatório")
     @Size(min = 2, max = 255, message = "Descrição deve conter entre 2 a 255 caracteres")
     private String description;
+
+    private Long attractionTypeId;
+    
 }

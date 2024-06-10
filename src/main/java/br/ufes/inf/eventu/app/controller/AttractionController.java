@@ -30,7 +30,7 @@ public class AttractionController {
 
     @Autowired
     private AttractionService attractionService;
-    
+
     @Autowired
     private AttractionTypeService attractionTypeService;
 
@@ -61,6 +61,14 @@ public class AttractionController {
     public String register(Model model) {
         model.addAttribute("title", "Cadastrar");
         model.addAttribute("attractionModel", new AttractionModel());
+
+        var attractionTypes = attractionTypeDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        model.addAttribute("attractionTypes", attractionTypes);
+
         return "attractions/register";
     }
 
@@ -80,6 +88,11 @@ public class AttractionController {
             var attraction = new Attraction();
             attraction.setName(attractionModel.getName());
             attraction.setDescription(attractionModel.getDescription());
+            attraction.setDescription(attractionModel.getDescription());
+
+            var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
+
+            attraction.setAttractionType(selectedAttractionType);
             attractionService.save(attraction);
         } catch (Exception e) {
             var msg = "Erro ao atração";

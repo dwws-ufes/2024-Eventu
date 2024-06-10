@@ -26,7 +26,7 @@ public class Attraction {
     @Setter private LocalTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "attraction_type_id")
+    @JoinColumn(name = "attraction_type_id", nullable = false)
     @Setter private AttractionType attractionType;
 
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)

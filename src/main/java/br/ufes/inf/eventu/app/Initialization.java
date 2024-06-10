@@ -1,9 +1,11 @@
 package br.ufes.inf.eventu.app;
 
 import br.ufes.inf.eventu.app.domain.Attraction;
+import br.ufes.inf.eventu.app.domain.AttractionType;
 import br.ufes.inf.eventu.app.domain.User;
 import br.ufes.inf.eventu.app.domain.enums.UserRole;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
+import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
 import br.ufes.inf.eventu.app.persistence.UserDAO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -16,10 +18,11 @@ public class Initialization {
 
     public static void setUp(
             UserDAO repositoryUser,
-            AttractionDAO repositoryAttractionDAO) throws Exception {
+            AttractionDAO repositoryAttractionDAO,
+            AttractionTypeDAO repositoryAttractionTypeDAO) throws Exception {
 
         createUserAdmin(repositoryUser);
-        createAttraction(repositoryAttractionDAO);
+        createAttraction(repositoryAttractionDAO, repositoryAttractionTypeDAO);
     }
 
     public static void createUserAdmin(UserDAO repository) throws Exception {
@@ -33,7 +36,8 @@ public class Initialization {
                 .filter(x -> emails.contains(x.getEmail()))
                 .toList();
 
-        if(users.size() == 2) return;
+        if (users.size() == 2)
+            return;
 
         var user = new User();
         user.setFullName("Admin");
@@ -56,37 +60,102 @@ public class Initialization {
         repository.save(user);
     }
 
-    public static void createAttraction(AttractionDAO repository) throws Exception {
+    public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository) throws Exception {
 
-        var attractionNames = Arrays.asList(
+        var palestraAttractionNames = Arrays.asList(
                 "Palestra IOT",
-                "Workshop de Machine Learning",
-                "Introdução ao Desenvolvimento Web",
-                "Hackathon de Segurança Cibernética",
                 "Palestra sobre Blockchain",
-                "Maratona de Programação",
-                "Workshop de Desenvolvimento Mobile",
                 "Palestra sobre Inteligência Artificial",
                 "Seminário de DevOps",
-                "Curso de Programação Funcional",
-                "Introdução ao Big Data",
-                "Oficina de Realidade Aumentada",
-                "Curso de Programação em Python",
                 "Palestra sobre Computação Quântica",
-                "Workshop de Design UX/UI",
-                "Maratona de Robótica",
                 "Seminário de Cloud Computing",
-                "Palestra sobre Ética na IA",
-                "Hackathon de Jogos Digitais",
-                "Oficina de Testes Automatizados"
-        );
+                "Palestra sobre Ética na IA");
 
-        if(repository.findAll().stream().anyMatch(x -> attractionNames.contains(x.getName()))) return;
+        if (repository.findAll().stream().anyMatch(x -> palestraAttractionNames.contains(x.getName())))
+            return;
 
-        for (var item : attractionNames){
-            var attractionModel  = new Attraction();
+        var attractionTypeNames = Arrays.asList(
+                "Palestra",
+                "Minicurso",
+                "Workshop",
+                "Visita Técnica",
+                "Torneio");
+
+        for (var item : attractionTypeNames) {
+            var attractionTypeModel = new AttractionType();
+            attractionTypeModel.setName(item);
+            attractionTypeModel.setDescription(item);
+            typeRepository.save(attractionTypeModel);
+        }
+
+        for (var item : palestraAttractionNames) {
+            var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            var type = typeRepository.findByName("Palestra");
+            attractionModel.setAttractionType(type);
+            attractionModel.setCreatedAt(LocalTime.now());
+            repository.save(attractionModel);
+        }
+
+        var minicursoAttractionNames = Arrays.asList(
+                "Introdução ao Desenvolvimento Web",
+                "Curso de Programação Funcional",
+                "Introdução ao Big Data",
+                "Curso de Programação em Python");
+
+        for (var item : minicursoAttractionNames) {
+            var attractionModel = new Attraction();
+            attractionModel.setName(item);
+            attractionModel.setDescription(item);
+            var type = typeRepository.findByName("Minicurso");
+            attractionModel.setAttractionType(type);
+            attractionModel.setCreatedAt(LocalTime.now());
+            repository.save(attractionModel);
+        }
+
+        var workshopAttractionNames = Arrays.asList(
+                "Workshop de Machine Learning",
+                "Workshop de Desenvolvimento Mobile",
+                "Oficina de Realidade Aumentada",
+                "Workshop de Design UX/UI",
+                "Oficina de Testes Automatizados");
+
+        for (var item : workshopAttractionNames) {
+            var attractionModel = new Attraction();
+            attractionModel.setName(item);
+            attractionModel.setDescription(item);
+            var type = typeRepository.findByName("Workshop");
+            attractionModel.setAttractionType(type);
+            attractionModel.setCreatedAt(LocalTime.now());
+            repository.save(attractionModel);
+        }
+
+        var visitaAttractionNames = Arrays.asList(
+                "Visita Técnica ao Data Center ISH",
+                "Visita Técnica a Biancogres");
+
+        for (var item : visitaAttractionNames) {
+            var attractionModel = new Attraction();
+            attractionModel.setName(item);
+            attractionModel.setDescription(item);
+            var type = typeRepository.findByName("Visita Técnica");
+            attractionModel.setAttractionType(type);
+            attractionModel.setCreatedAt(LocalTime.now());
+            repository.save(attractionModel);
+        }
+
+        var torneioAttractionNames = Arrays.asList(
+                "Maratona de Programação",
+                "Hackathon de Jogos Digitais",
+                "Maratona de Robótica");
+
+        for (var item : torneioAttractionNames) {
+            var attractionModel = new Attraction();
+            attractionModel.setName(item);
+            attractionModel.setDescription(item);
+            var type = typeRepository.findByName("Torneio");
+            attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
             repository.save(attractionModel);
         }
