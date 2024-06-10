@@ -8,7 +8,7 @@
             <div class="card">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${attraction.name}">Card title</h5>
+                    <h5 class="card-title" th:text="${attraction.name}">Card title</h5> <a class="btn"  th:href="@{'/attractions/edit/' + ${page}}" sec:authorize="hasRole('ADMIN')">Editar</a>
                     <p class="card-text" th:text="${attraction.description}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                 </div>
             </div>

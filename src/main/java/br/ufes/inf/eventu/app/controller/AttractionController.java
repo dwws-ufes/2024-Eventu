@@ -95,6 +95,38 @@ public class AttractionController {
         return "attractions/register";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        Attraction attraction = attractionDAO.findById(id).get();
+        AttractionModel attractionModel = new AttractionModel();
+
+        attractionModel.setId(attraction.getId());
+        attractionModel.setName(attraction.getName());
+        attractionModel.setDescription(attraction.getDescription());
+        attractionModel.setAttractionTypeId(attraction.getAttractionType().getId());
+        attractionModel.setSpeakersIds(new HashSet<Long>(attraction.getSpeakers().stream().map(s -> s.getId()).toList()));       
+        attractionModel.setAttachments(attraction.getAttachments());       
+
+
+        model.addAttribute("title", "Cadastrar");
+        model.addAttribute("attractionModel", attractionModel);
+
+        var attractionTypes = attractionTypeDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        var speakers = speakerDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        model.addAttribute("attractionTypes", attractionTypes);
+        model.addAttribute("speakers", speakers);
+
+        return "attractions/edit";
+    }
+
     @PostMapping("/register")
     public String submitRegister(
             @Valid @ModelAttribute("attractionModel") AttractionModel attractionModel,
