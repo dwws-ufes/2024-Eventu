@@ -95,6 +95,43 @@ public class AttractionController {
         return "attractions/register";
     }
 
+
+    @PostMapping("/register")
+    public String submitRegister(
+            @Valid @ModelAttribute("attractionModel") AttractionModel attractionModel,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
+        model.addAttribute("title", "Cadastrar");
+
+        if (bindingResult.hasErrors())
+            return "attractions/register";
+
+        try {
+            var attraction = new Attraction();
+            attraction.setName(attractionModel.getName());
+            attraction.setDescription(attractionModel.getDescription());
+            attraction.setDescription(attractionModel.getDescription());
+
+            var speakers = speakerDAO.findAllById(attractionModel.getSpeakersIds());
+
+            var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
+
+            attraction.setAttractionType(selectedAttractionType);
+            attraction.setSpeakers(new HashSet<>(speakers));
+            attraction = attractionService.save(attraction);
+
+            attributes.addAttribute("registered", "true");
+            return "redirect:/attractions/edit/" + attraction.getId();
+        } catch (Exception e) {
+            var msg = "Erro ao atração";
+            if (e instanceof EventuException) msg = e.getMessage();
+            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            return "attractions/register";
+        }
+    }
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         Attraction attraction = attractionDAO.findById(id).get();
@@ -127,41 +164,6 @@ public class AttractionController {
         return "attractions/edit";
     }
 
-    @PostMapping("/register")
-    public String submitRegister(
-            @Valid @ModelAttribute("attractionModel") AttractionModel attractionModel,
-            BindingResult bindingResult,
-            Model model,
-            RedirectAttributes attributes) {
-
-        model.addAttribute("title", "Cadastrar");
-
-        if (bindingResult.hasErrors())
-            return "attractions/register";
-
-        try {
-            var attraction = new Attraction();
-            attraction.setName(attractionModel.getName());
-            attraction.setDescription(attractionModel.getDescription());
-            attraction.setDescription(attractionModel.getDescription());
-
-            var speakers = speakerDAO.findAllById(attractionModel.getSpeakersIds());
-
-            var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
-
-            attraction.setAttractionType(selectedAttractionType);
-            attraction.setSpeakers(new HashSet<>(speakers));
-            attractionService.save(attraction);
-        } catch (Exception e) {
-            var msg = "Erro ao atração";
-            if (e instanceof EventuException) msg = e.getMessage();
-            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
-            return "attractions/register";
-        }
-
-        attributes.addAttribute("registered", "true");
-        return "redirect:/attractions/register";
-    }
 
     @GetMapping("/register_type")
     public String registerType(Model model) {
