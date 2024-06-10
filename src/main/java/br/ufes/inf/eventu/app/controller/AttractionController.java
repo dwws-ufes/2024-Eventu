@@ -3,13 +3,17 @@ package br.ufes.inf.eventu.app.controller;
 import br.ufes.inf.eventu.app.core.EventuException;
 import br.ufes.inf.eventu.app.domain.Attraction;
 import br.ufes.inf.eventu.app.domain.AttractionType;
+import br.ufes.inf.eventu.app.domain.Location;
 import br.ufes.inf.eventu.app.model.AttractionModel;
 import br.ufes.inf.eventu.app.model.AttractionTypeModel;
+import br.ufes.inf.eventu.app.model.LocationModel;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
+import br.ufes.inf.eventu.app.persistence.LocationDAO;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionService;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
+import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 import jakarta.validation.Valid;
 
 import java.util.HashSet;
@@ -36,10 +40,16 @@ public class AttractionController {
     private SpeakerDAO speakerDAO;
 
     @Autowired
+    private LocationDAO locationDAO;
+
+    @Autowired
     private AttractionService attractionService;
 
     @Autowired
     private AttractionTypeService attractionTypeService;
+
+    @Autowired
+    private LocationService locationService;
 
     @GetMapping("")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
@@ -162,6 +172,49 @@ public class AttractionController {
 
         attributes.addAttribute("registered", "true");
         return "redirect:/attractions/register_type";
+    }
+
+    @GetMapping("/register_location")
+    public String registerLocation(Model model) {
+        model.addAttribute("title", "Cadastrar");
+        model.addAttribute("locationModel", new LocationModel());
+
+        var registeredLocations =  locationDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        
+        model.addAttribute("registeredLocations", registeredLocations);
+        return "attractions/register_location";
+    }
+
+    @PostMapping("/register_location")
+    public String submitRegisterLocation(
+            @Valid @ModelAttribute("locationModel") LocationModel locationModel,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
+        model.addAttribute("title", "Cadastrar");
+
+        if (bindingResult.hasErrors())
+            return "attractions/register_location";
+
+        try {
+            var location = new Location();
+            location.setName(locationModel.getName());
+            location.setDescription(locationModel.getDescription());
+            locationService.save(location);
+        } catch (Exception e) {
+            var msg = "Erro ao registrar tipo de atração";
+            if (e instanceof EventuException) msg = e.getMessage();
+            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            return "attractions/register_location";
+        }
+
+        attributes.addAttribute("registered", "true");
+        return "redirect:/attractions/register_location";
     }
 
 }

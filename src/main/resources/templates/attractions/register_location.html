@@ -3,15 +3,13 @@
      layout:fragment="content"
      xmlns:th="http://www.thymeleaf.org">
 
-    
-    <a class="btn btn-info mb-3" href="/attractions/register_type">Tipos de atrações</a>
-    <a class="btn btn-info mb-3" href="/attractions/register_location">Locais</a>
+    <a class="btn btn-info mb-3" href="/attractions/register">Voltar</a>
 
-    <form name="f" th:action="@{/attractions/register}" th:object="${attractionModel}" method="post">
+    <form name="f" th:action="@{/attractions/register_location}" th:object="${locationModel}" method="post">
         <h1 class="h3 mb-3 fw-normal">Informe os dados</h1>
 
         <div th:if="${param.registered}" class="alert alert-success alert-dismissible fade show" role="alert">
-            Atração cadastrada com sucesso.
+            Local cadastrado com sucesso.
             <button type="button" class="btn-close" id="btnClose" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
@@ -22,7 +20,7 @@
                         <input type="text" class="form-control" id="name"
                                th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
                                th:field="*{name}"/>
-                        <label for="name">Título atração</label>
+                        <label for="name">Nome do Local</label>
                     </div>
                     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback">
                         error
@@ -41,7 +39,7 @@
                                   th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
                                   th:field="*{description}">
                         </textarea>
-                        <label for="description">Descrição da atração</label>
+                        <label for="description">Descrição do Local</label>
                     </div>
                     <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback">
                         error
@@ -49,38 +47,24 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <div class="input-group has-validation">
-                    <div class="form-floating">
-                        <select class="form-select"
-                                id="attractionTypeId"
-                                th:field="*{attractionTypeId}">
-                            <option value="">Selecione...</option>
-                            <option th:each="attractionType : ${attractionTypes}" th:value="${attractionType.id}" th:text="${attractionType.name}"></option>
-                        </select>
-                        <label for="attractionTypeId">Tipo de Atração</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <div class="input-group has-validation">
-                    <div class="form-floating h-auto">
-                        <select class="form-select"
-                                multiple 
-                                id="speakersIds"
-                                th:field="*{speakersIds}">
-                            <option th:each="speaker : ${speakers}" th:value="${speaker.id}" th:text="${speaker.name}"></option>
-                        </select>
-                        <label for="speakerId">Palestrantes</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
+        <button class="btn btn-primary py-2" type="submit">Cadastrar</button>
     </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="location : ${registeredLocations}">
+                <td th:text="${location.name}"></td>
+                <td th:text="${location.description}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
 </div>
 
 <script>
