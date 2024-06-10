@@ -1,5 +1,7 @@
 package br.ufes.inf.eventu.app.model;
 
+import java.util.HashSet;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -20,5 +22,7 @@ public class AttractionModel {
     private String description;
 
     private Long attractionTypeId;
+
+    private HashSet<Long> speakersIds;
     
 }

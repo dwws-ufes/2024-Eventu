@@ -1,5 +1,6 @@
 package br.ufes.inf.eventu.app.model;
 
+import java.util.HashSet;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -16,6 +17,6 @@ public class SpeakerModel {
     private String name;
 
     @NotBlank(message = "Descrição é obrigatório")
-    @Size(min = 2, max = 255, message = "Descrição deve conter entre 2 a 255 caracteres")
+    @Size(min = 0, max = 255, message = "Descrição deve conter entre 0 a 255 caracteres")
     private String description;    
 }

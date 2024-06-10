@@ -7,9 +7,13 @@ import br.ufes.inf.eventu.app.model.AttractionModel;
 import br.ufes.inf.eventu.app.model.AttractionTypeModel;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
+import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionService;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
 import jakarta.validation.Valid;
+
+import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +31,9 @@ public class AttractionController {
 
     @Autowired
     private AttractionTypeDAO attractionTypeDAO;
+
+    @Autowired
+    private SpeakerDAO speakerDAO;
 
     @Autowired
     private AttractionService attractionService;
@@ -67,7 +74,13 @@ public class AttractionController {
         .stream()
         .toList();
 
+        var speakers = speakerDAO
+        .findAll()
+        .stream()
+        .toList();
+
         model.addAttribute("attractionTypes", attractionTypes);
+        model.addAttribute("speakers", speakers);
 
         return "attractions/register";
     }
@@ -90,9 +103,12 @@ public class AttractionController {
             attraction.setDescription(attractionModel.getDescription());
             attraction.setDescription(attractionModel.getDescription());
 
+            var speakers = speakerDAO.findAllById(attractionModel.getSpeakersIds());
+
             var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
 
             attraction.setAttractionType(selectedAttractionType);
+            attraction.setSpeakers(new HashSet<>(speakers));
             attractionService.save(attraction);
         } catch (Exception e) {
             var msg = "Erro ao atração";

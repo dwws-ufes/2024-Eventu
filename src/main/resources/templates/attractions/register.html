@@ -63,6 +63,21 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select"
+                                multiple 
+                                id="speakersIds"
+                                th:field="*{speakersIds}">
+                            <option th:each="speaker : ${speakers}" th:value="${speaker.id}" th:text="${speaker.name}"></option>
+                        </select>
+                        <label for="speakerId">Palestrantes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
         <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
     </form>
 </div>

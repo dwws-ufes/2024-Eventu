@@ -37,7 +37,7 @@ public class Attraction {
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "attraction_speker",
+        name = "attraction_speaker",
         joinColumns = @JoinColumn(name = "attraction_id"),
         inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
