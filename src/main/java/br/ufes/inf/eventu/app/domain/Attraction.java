@@ -37,6 +37,14 @@ public class Attraction {
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
+        name = "attraction_speker",
+        joinColumns = @JoinColumn(name = "attraction_id"),
+        inverseJoinColumns = @JoinColumn(name = "speaker_id")
+    )
+    @Setter private Set<Speaker> speakers = new HashSet<>();
+
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
         name = "attraction_user",
         joinColumns = @JoinColumn(name = "attraction_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id")
