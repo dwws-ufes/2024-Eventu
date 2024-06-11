@@ -2,9 +2,11 @@ package br.ufes.inf.eventu.app.controller;
 
 import br.ufes.inf.eventu.app.core.EventuException;
 import br.ufes.inf.eventu.app.domain.Attraction;
+import br.ufes.inf.eventu.app.domain.AttractionTime;
 import br.ufes.inf.eventu.app.domain.AttractionType;
 import br.ufes.inf.eventu.app.domain.Location;
 import br.ufes.inf.eventu.app.model.AttractionModel;
+import br.ufes.inf.eventu.app.model.AttractionTimeModel;
 import br.ufes.inf.eventu.app.model.AttractionTypeModel;
 import br.ufes.inf.eventu.app.model.LocationModel;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
@@ -12,10 +14,12 @@ import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.persistence.LocationDAO;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionService;
+import br.ufes.inf.eventu.app.services.interfaces.AttractionTimeService;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
 import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +51,9 @@ public class AttractionController {
 
     @Autowired
     private AttractionTypeService attractionTypeService;
+
+    @Autowired
+    private AttractionTimeService attractionTimeService;
 
     @Autowired
     private LocationService locationService;
@@ -158,7 +165,14 @@ public class AttractionController {
         .stream()
         .toList();
 
+        var locations = locationDAO
+        .findAll()
+        .stream()
+        .toList();
+
+        model.addAttribute("registeredLocations", locations);
         model.addAttribute("attractionTypes", attractionTypes);
+        model.addAttribute("attractionTimeModel", new AttractionTimeModel());
         model.addAttribute("speakers", speakers);
 
         return "attractions/edit";
@@ -240,6 +254,36 @@ public class AttractionController {
             location.setName(locationModel.getName());
             location.setDescription(locationModel.getDescription());
             locationService.save(location);
+        } catch (Exception e) {
+            var msg = "Erro ao registrar tipo de atração";
+            if (e instanceof EventuException) msg = e.getMessage();
+            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            return "attractions/register_location";
+        }
+
+        attributes.addAttribute("registered", "true");
+        return "redirect:/attractions/register_location";
+    }
+
+    @PostMapping("/{id}/add_time")
+    public String addAttractionTime(
+            @PathVariable("id") Long id,
+            @Valid @ModelAttribute("attractionTimeModel") AttractionTimeModel attractionTimeModel,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
+        model.addAttribute("title", "Cadastrar");
+
+        if (bindingResult.hasErrors())
+            return "attractions/register_location";
+
+        try {
+            var time = new AttractionTime();
+            time.setStart(LocalDateTime.parse(attractionTimeModel.getStart()));
+            time.setFinish(LocalDateTime.parse(attractionTimeModel.getFinish()));
+            time.setLocation(locationDAO.findById(attractionTimeModel.getLocaleId()).get());
+            attractionTimeService.save(time);
         } catch (Exception e) {
             var msg = "Erro ao registrar tipo de atração";
             if (e instanceof EventuException) msg = e.getMessage();

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -21,12 +21,12 @@ public class AttractionTime {
     @Setter private Attraction attraction;
 
     @Setter
-    @Column(name = "start", columnDefinition = "TIME")
-    private LocalTime start;
+    @Column(name = "start", columnDefinition = "DATETIME")
+    private LocalDateTime start;
 
     @Setter
-    @Column(name = "finish", columnDefinition = "TIME")
-    private LocalTime finish;
+    @Column(name = "finish", columnDefinition = "DATETIME")
+    private LocalDateTime finish;
 
     @ManyToOne
     @JoinColumn(name = "location_id")

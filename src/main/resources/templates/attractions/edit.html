@@ -84,6 +84,64 @@
         </div>
         <button class="btn btn-primary py-2" type="submit">Salvar</button>        
     </form>
+    <hr>
+
+    <form name="f" th:action="@{/attractions/{id}/add_time/(id=${attractionModel.id})}" th:object="${attractionTimeModel}" method="post">
+        <h2 class="h3 mb-3 fw-normal">Horários</h2>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input type="datetime-local" class="form-control" id="start" th:field="*{start}" required/>
+                    <label for="start">Inicio</label>
+                    <div class="invalid-feedback">
+                        Por favor escolha um horário de inicio.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <input type="datetime-local" class="form-control" id="finish" th:field="*{finish}" required/>
+                    <label for="finish">Término</label>
+                    <div class="invalid-feedback">
+                        Por favor escolha um horário de término.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <select class="form-select" id="locationId" th:field="*{locationId}" required>
+                        <option value="">Selecione...</option>
+                        <option th:each="location : ${registeredLocations}" th:value="${location.id}" th:text="${location.name}"></option>
+                        </select>
+                        
+                    <label for="locationId">Local</label>
+                    <div class="invalid-feedback">
+                        Por favor selecione um Local
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary py-2" type="submit">Adicionar Horário</button>        
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Inicio</th>
+                <th>Fim</th>
+                <th>Local</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the registered AttractionTypes and display each one -->
+            <tr th:each="attractionTime : ${attractionModel.times}">
+                <td th:text="${attractionTime.start}"></td>
+                <td th:text="${attractionTime.finish}"></td>
+                <td th:text="${attractionTime.location}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
 </div>
 
 <script>
