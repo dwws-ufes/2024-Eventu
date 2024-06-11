@@ -152,7 +152,7 @@ public class AttractionController {
         attractionModel.setAttachments(attraction.getAttachments());       
 
 
-        model.addAttribute("title", "Cadastrar");
+        model.addAttribute("title", "Editar atração");
         model.addAttribute("attractionModel", attractionModel);
 
         var attractionTypes = attractionTypeDAO
@@ -176,6 +176,43 @@ public class AttractionController {
         model.addAttribute("speakers", speakers);
 
         return "attractions/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String submitEdit(
+            @PathVariable("id") Long id,
+            @Valid @ModelAttribute("attractionModel") AttractionModel attractionModel,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes attributes) {
+
+        model.addAttribute("title", "Editar Atração");	
+
+        if (bindingResult.hasErrors())
+            return "attractions/register";
+
+        try {
+            var attraction = attractionDAO.findById(id).get();
+            attraction.setName(attractionModel.getName());
+            attraction.setDescription(attractionModel.getDescription());
+            attraction.setDescription(attractionModel.getDescription());
+
+            var speakers = speakerDAO.findAllById(attractionModel.getSpeakersIds());
+
+            var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
+
+            attraction.setAttractionType(selectedAttractionType);
+            attraction.setSpeakers(new HashSet<>(speakers));
+            attraction = attractionService.save(attraction);
+
+            attributes.addAttribute("registered", "true");
+            return "redirect:/attractions/edit/" + attraction.getId();
+        } catch (Exception e) {
+            var msg = "Erro ao atração";
+            if (e instanceof EventuException) msg = e.getMessage();
+            bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            return "attractions/register";
+        }
     }
 
 

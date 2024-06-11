@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${attraction.name}">Card title</h5> <a class="btn"  th:href="@{'/attractions/edit/' + ${attraction.id}}" sec:authorize="hasRole('ADMIN')">Editar</a>
                     <p class="card-text" th:text="${attraction.description}"></p>
+                    <p th:if="${attraction.speakers.size() > 0}" class="card-text" th:text="Palestrante(s): ${attraction.speakers.iterator().next().getName()}"></p>
                     <p th:if="${attraction.attractionTimes.size() > 0}" class="card-text" th:text="${attraction.attractionTimes.get(0)}"></p>
                 </div>
             </div>
