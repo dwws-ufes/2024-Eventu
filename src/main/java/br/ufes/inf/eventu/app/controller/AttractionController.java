@@ -19,7 +19,8 @@ import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
 import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 import jakarta.validation.Valid;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -317,8 +318,9 @@ public class AttractionController {
 
         try {
             var time = new AttractionTime();
-            time.setStart(LocalDateTime.parse(attractionTimeModel.getStart()));
-            time.setFinish(LocalDateTime.parse(attractionTimeModel.getFinish()));
+            time.setDate(LocalDate.parse(attractionTimeModel.getDate()));
+            time.setStart(LocalTime.parse(attractionTimeModel.getStart()));
+            time.setFinish(LocalTime.parse(attractionTimeModel.getFinish()));
             time.setLocation(locationDAO.findById(attractionTimeModel.getLocationId()).get());
             time.setAttraction(attractionDAO.findById(attractionId).get());
             attractionTimeService.save(time);

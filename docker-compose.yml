@@ -1,5 +1,14 @@
 version: '3.7'
 services:
+  app:
+    build: .  # Build from the current directory (where Dockerfile is)
+    depends_on:  # Ensures the DB is running before the app starts
+      - database
+    ports:
+      - "8080:8080" # Map your Spring Boot app's port
+    environment:
+      - MYSQL_HOST=database
+      
   database:
     image: mysql:8.4
     volumes:
@@ -12,6 +21,7 @@ services:
       - MYSQL_DATABASE=aluno
       - MYSQL_USER=aluno
       - MYSQL_PASSWORD=aluno
+      
 
 volumes:
   mysql:

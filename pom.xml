@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.ufes.inf.eventu</groupId>
 	<artifactId>app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>app</name>
 	<description>2024-Eventu for ProgWeb</description>
 	<properties>
