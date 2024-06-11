@@ -2,10 +2,12 @@ package br.ufes.inf.eventu.app;
 
 import br.ufes.inf.eventu.app.domain.Attraction;
 import br.ufes.inf.eventu.app.domain.AttractionType;
+import br.ufes.inf.eventu.app.domain.Speaker;
 import br.ufes.inf.eventu.app.domain.User;
 import br.ufes.inf.eventu.app.domain.enums.UserRole;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
+import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.persistence.UserDAO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -19,10 +21,11 @@ public class Initialization {
     public static void setUp(
             UserDAO repositoryUser,
             AttractionDAO repositoryAttractionDAO,
-            AttractionTypeDAO repositoryAttractionTypeDAO) throws Exception {
+            AttractionTypeDAO repositoryAttractionTypeDAO,
+            SpeakerDAO speakerDAO) throws Exception {
 
         createUserAdmin(repositoryUser);
-        createAttraction(repositoryAttractionDAO, repositoryAttractionTypeDAO);
+        createAttraction(repositoryAttractionDAO, repositoryAttractionTypeDAO, speakerDAO);
     }
 
     public static void createUserAdmin(UserDAO repository) throws Exception {
@@ -60,7 +63,7 @@ public class Initialization {
         repository.save(user);
     }
 
-    public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository) throws Exception {
+    public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository, SpeakerDAO speakerRepository) throws Exception {
 
         var palestraAttractionNames = Arrays.asList(
                 "Palestra IOT",
@@ -158,6 +161,18 @@ public class Initialization {
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
             repository.save(attractionModel);
+        }
+
+        var speakers = Arrays.asList(
+            "Patricia Dockhorn",
+            "Victor E. Silva Souza",
+            "Alberto Ferreira De Souza");
+
+        for (var item : speakers) {
+            var speakerModel = new Speaker();
+            speakerModel.setName(item);
+            speakerModel.setDescription(item);
+            speakerRepository.save(speakerModel);
         }
     }
 }

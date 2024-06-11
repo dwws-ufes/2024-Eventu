@@ -282,7 +282,7 @@ public class AttractionController {
             var time = new AttractionTime();
             time.setStart(LocalDateTime.parse(attractionTimeModel.getStart()));
             time.setFinish(LocalDateTime.parse(attractionTimeModel.getFinish()));
-            time.setLocation(locationDAO.findById(attractionTimeModel.getLocaleId()).get());
+            time.setLocation(locationDAO.findById(attractionTimeModel.getLocationId()).get());
             attractionTimeService.save(time);
         } catch (Exception e) {
             var msg = "Erro ao registrar tipo de atração";
