@@ -2,11 +2,13 @@ package br.ufes.inf.eventu.app;
 
 import br.ufes.inf.eventu.app.domain.Attraction;
 import br.ufes.inf.eventu.app.domain.AttractionType;
+import br.ufes.inf.eventu.app.domain.Location;
 import br.ufes.inf.eventu.app.domain.Speaker;
 import br.ufes.inf.eventu.app.domain.User;
 import br.ufes.inf.eventu.app.domain.enums.UserRole;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
+import br.ufes.inf.eventu.app.persistence.LocationDAO;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.persistence.UserDAO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,10 +24,13 @@ public class Initialization {
             UserDAO repositoryUser,
             AttractionDAO repositoryAttractionDAO,
             AttractionTypeDAO repositoryAttractionTypeDAO,
-            SpeakerDAO speakerDAO) throws Exception {
+            SpeakerDAO speakerDAO,
+            LocationDAO locationDAO ) throws Exception {
 
         createUserAdmin(repositoryUser);
-        createAttraction(repositoryAttractionDAO, repositoryAttractionTypeDAO, speakerDAO);
+        createAttraction(repositoryAttractionDAO, repositoryAttractionTypeDAO);
+        createSpeaker(speakerDAO);
+        createLocation(locationDAO);
     }
 
     public static void createUserAdmin(UserDAO repository) throws Exception {
@@ -63,7 +68,7 @@ public class Initialization {
         repository.save(user);
     }
 
-    public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository, SpeakerDAO speakerRepository) throws Exception {
+    public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository) throws Exception {
 
         var palestraAttractionNames = Arrays.asList(
                 "Palestra IOT",
@@ -95,6 +100,7 @@ public class Initialization {
             var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            attractionModel.setVagas(100);
             var type = typeRepository.findByName("Palestra");
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
@@ -111,6 +117,7 @@ public class Initialization {
             var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            attractionModel.setVagas(10);
             var type = typeRepository.findByName("Minicurso");
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
@@ -128,6 +135,7 @@ public class Initialization {
             var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            attractionModel.setVagas(10);
             var type = typeRepository.findByName("Workshop");
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
@@ -142,6 +150,7 @@ public class Initialization {
             var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            attractionModel.setVagas(12);
             var type = typeRepository.findByName("Visita Técnica");
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
@@ -157,12 +166,16 @@ public class Initialization {
             var attractionModel = new Attraction();
             attractionModel.setName(item);
             attractionModel.setDescription(item);
+            attractionModel.setVagas(6);
             var type = typeRepository.findByName("Torneio");
             attractionModel.setAttractionType(type);
             attractionModel.setCreatedAt(LocalTime.now());
             repository.save(attractionModel);
-        }
+        }        
+    }
 
+    public static void createSpeaker(SpeakerDAO speakerRepository) throws Exception {
+        
         var speakers = Arrays.asList(
             "Patricia Dockhorn",
             "Victor E. Silva Souza",
@@ -175,4 +188,19 @@ public class Initialization {
             speakerRepository.save(speakerModel);
         }
     }
+
+    public static void createLocation(LocationDAO locationRepository) throws Exception {
+        
+        var locations = Arrays.asList(
+            "Teatro da Ufes",
+            "CT XIII");
+
+        for (var item : locations) {
+            var locationModel = new Location();
+            locationModel.setName(item);
+            locationModel.setDescription(item);
+            locationRepository.save(locationModel);
+        }
+    }
+
 }

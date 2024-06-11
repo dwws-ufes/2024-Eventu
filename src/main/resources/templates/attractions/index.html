@@ -6,10 +6,11 @@
     <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
         <div class="col" th:each="attraction: ${attractions}">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <!-- <img src="..." class="card-img-top" alt="..."> -->
                 <div class="card-body">
                     <h5 class="card-title" th:text="${attraction.name}">Card title</h5> <a class="btn"  th:href="@{'/attractions/edit/' + ${attraction.id}}" sec:authorize="hasRole('ADMIN')">Editar</a>
-                    <p class="card-text" th:text="${attraction.description}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text" th:text="${attraction.description}"></p>
+                    <p th:if="${attraction.attractionTimes.size() > 0}" class="card-text" th:text="${attraction.attractionTimes.get(0)}"></p>
                 </div>
             </div>
         </div>
@@ -19,7 +20,7 @@
         <ul class="pagination justify-content-end">
             <li class="page-item"
                 th:classappend="${pageCurrent == 1 ? 'disabled' : ''}">
-                <a class="page-link" href="/attractions?page=1">Previous</a>
+                <a class="page-link" href="/attractions?page=1">Anterior</a>
             </li>
             <li class="page-item"
                 th:each="page: ${#numbers.sequence(1,totalPages)}"
@@ -31,7 +32,7 @@
             <li class="page-item"
                 th:classappend="${totalPages == 1 || totalPages == pageCurrent ? 'disabled' : ''}">
                 <a class="page-link"
-                   th:href="@{'/attractions?page=' + ${pageCurrent + 1}}">Next</a>
+                   th:href="@{'/attractions?page=' + ${pageCurrent + 1}}">Próxima</a>
             </li>
         </ul>
     </nav>

@@ -1,6 +1,7 @@
 package br.ufes.inf.eventu.app.model;
 
 import java.util.Set;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,12 +26,14 @@ public class AttractionModel {
     @Size(min = 2, max = 255, message = "Descrição deve conter entre 2 a 255 caracteres")
     private String description;
 
+    private Integer vagas;
+
     private Long attractionTypeId;
 
     private Set<Long> speakersIds;
 
     private Set<File> attachments;
 
-    private Set<AttractionTimeModel> times;
+    private List<AttractionTimeModel> attractionTimes;
     
 }

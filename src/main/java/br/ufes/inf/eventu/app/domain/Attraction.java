@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -22,6 +24,8 @@ public class Attraction {
 
     @Setter private String description;
 
+    @Setter private Integer vagas;
+
     @Column(name = "createdAt", columnDefinition = "TIME")
     @Setter private LocalTime createdAt;
 
@@ -30,7 +34,7 @@ public class Attraction {
     @Setter private AttractionType attractionType;
 
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
-    @Setter private Set<AttractionTime> attractionTimes = new HashSet<>();
+    @Setter private List<AttractionTime> attractionTimes = new ArrayList<>();
 
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
     @Setter private Set<File> attachments = new HashSet<>();

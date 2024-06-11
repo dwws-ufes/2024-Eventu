@@ -265,9 +265,9 @@ public class AttractionController {
         return "redirect:/attractions/register_location";
     }
 
-    @PostMapping("/{id}/add_time")
+    @PostMapping("/add_time/{id}")
     public String addAttractionTime(
-            @PathVariable("id") Long id,
+            @PathVariable("id") Long attractionId,
             @Valid @ModelAttribute("attractionTimeModel") AttractionTimeModel attractionTimeModel,
             BindingResult bindingResult,
             Model model,
@@ -276,23 +276,25 @@ public class AttractionController {
         model.addAttribute("title", "Cadastrar");
 
         if (bindingResult.hasErrors())
-            return "attractions/register_location";
+            return "attractions/edit";
 
         try {
             var time = new AttractionTime();
             time.setStart(LocalDateTime.parse(attractionTimeModel.getStart()));
             time.setFinish(LocalDateTime.parse(attractionTimeModel.getFinish()));
             time.setLocation(locationDAO.findById(attractionTimeModel.getLocationId()).get());
+            time.setAttraction(attractionDAO.findById(attractionId).get());
             attractionTimeService.save(time);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             var msg = "Erro ao registrar tipo de atração";
             if (e instanceof EventuException) msg = e.getMessage();
             bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
-            return "attractions/register_location";
+            return "attractions/edit";
         }
 
         attributes.addAttribute("registered", "true");
-        return "redirect:/attractions/register_location";
+        return "redirect:attractions/edit/" + attractionId;
     }
 
 }

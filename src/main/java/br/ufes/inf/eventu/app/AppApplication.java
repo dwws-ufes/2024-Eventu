@@ -3,6 +3,7 @@ package br.ufes.inf.eventu.app;
 import br.ufes.inf.eventu.app.persistence.UserDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
+import br.ufes.inf.eventu.app.persistence.LocationDAO;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 
 import org.springframework.boot.CommandLineRunner;
@@ -23,12 +24,14 @@ public class AppApplication {
 
 	@Bean
 	public CommandLineRunner demo(
-		UserDAO repositoryUser,
-		AttractionDAO repositoryAttractionDAO,
-		AttractionTypeDAO repositoryAttractionTypeDAO,
-		SpeakerDAO repositorySpeakerDAO) {
+			UserDAO repositoryUser,
+			AttractionDAO repositoryAttractionDAO,
+			AttractionTypeDAO repositoryAttractionTypeDAO,
+			SpeakerDAO repositorySpeakerDAO,
+			LocationDAO repositoryLocationDAO) {
 		return (args) -> {
-			setUp(repositoryUser, repositoryAttractionDAO, repositoryAttractionTypeDAO, repositorySpeakerDAO);
+			setUp(repositoryUser, repositoryAttractionDAO, repositoryAttractionTypeDAO, repositorySpeakerDAO,
+					repositoryLocationDAO);
 		};
 	}
 }

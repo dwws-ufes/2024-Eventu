@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Entity
@@ -21,14 +22,23 @@ public class AttractionTime {
     @Setter private Attraction attraction;
 
     @Setter
-    @Column(name = "start", columnDefinition = "DATETIME")
-    private LocalDateTime start;
+    @Column(name = "date", columnDefinition = "DATE")
+    private LocalDate date;
 
     @Setter
-    @Column(name = "finish", columnDefinition = "DATETIME")
-    private LocalDateTime finish;
+    @Column(name = "start", columnDefinition = "TIME")
+    private LocalTime start;
+
+    @Setter
+    @Column(name = "finish", columnDefinition = "TIME")
+    private LocalTime finish;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
     @Setter private Location location;
+
+    @Override
+    public String toString() {
+        return date + " " + start + " às  " + finish + ", " + location.getName();
+    }
 }
