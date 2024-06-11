@@ -62,7 +62,18 @@ A Tabela~\ref{tabela-frameworks} indica os \textit{frameworks} presentes na arqu
 
 \textbf{CheckIn}: Classe de relacionamento entre o horario da atração e um usuário, utilizada para registro de presença.
 
-\textbf{AttractionUser}: Representa a \textit{Join Table} dos usuarios inscritos numa atividade, na relação muitos para muitos.
+Também foram usadas classes de enumeração (\textit{Enums}) para listar valores possíveis de algumas classes como \textbf{Role}, que representa o papel do usuário no sistema, \textbf{AttachmentType}, que representa o tipo de anexo que foi associado à uma atração e \textbf{TicketStatus}, que representa os possíveis status de um ingresso que foi emitido.
+
+\section{Modelo De Aplicação}
+\label{sec-frameweb-app}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figuras/ModeloAplicacao.PNG}
+	\caption{Modelo de Aplicação.}
+	\label{figura-app}
+\end{figure}
 
 
 \section{Camada de Acesso a Dados}
@@ -76,7 +87,7 @@ A Tabela~\ref{tabela-frameworks} indica os \textit{frameworks} presentes na arqu
 	\label{figura-persistencia}
 \end{figure}
 
-Além da implementação de funcionalidades CRUD (do inglês: Criação, Consulta, Atualização e Destruição), podemos ressaltar na camada de acesso a dados algumas outras operações:
+Além das funcionalidades CRUD (do inglês: Criação, Consulta, Atualização e Destruição) herdadas da classe \textit{org.springframework.data.jpa.repository.JpaRepository}, podemos ressaltar na camada de acesso a dados algumas outras operações:
 
 \textbf{TicketJPADAO}: +retireveByTicketCode - Operação responsável por encontrar o ticket no banco de dados durante o processo de validação do ingresso.
 

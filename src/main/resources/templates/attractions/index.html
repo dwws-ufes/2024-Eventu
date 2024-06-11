@@ -1,0 +1,40 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org"
+     layout:decorate="~{layout/base}"
+     layout:fragment="content">
+
+    <div class="row row-cols-1 row-cols-md-2 g-4 mb-3">
+        <div class="col" th:each="attraction: ${attractions}">
+            <div class="card">
+                <!-- <img src="..." class="card-img-top" alt="..."> -->
+                <div class="card-body">
+                    <h5 class="card-title d-inline" th:text="${attraction.name}">Card title</h5> <a class="btn d-inline"  th:href="@{'/attractions/edit/' + ${attraction.id}}" sec:authorize="hasRole('ADMIN')">Editar</a>
+                    <p class="card-text" th:text="${attraction.description}"></p>
+                    <p th:if="${attraction.speakers.size() > 0}" class="card-text" th:text="'Palestrante(s): ' + ${attraction.speakers.get(0).getName()}"></p>
+                    <p th:if="${attraction.attractionTimes.size() > 0}" class="card-text" th:text="${attraction.attractionTimes.get(0)}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <li class="page-item"
+                th:classappend="${pageCurrent == 1 ? 'disabled' : ''}">
+                <a class="page-link" href="/attractions?page=1">Anterior</a>
+            </li>
+            <li class="page-item"
+                th:each="page: ${#numbers.sequence(1,totalPages)}"
+                th:classappend="${page == pageCurrent ? 'active' : ''}" >
+                <a class="page-link"
+                   th:href="@{'/attractions?page=' + ${page}}"
+                   th:text="${page}">1</a>
+            </li>
+            <li class="page-item"
+                th:classappend="${totalPages == 1 || totalPages == pageCurrent ? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/attractions?page=' + ${pageCurrent + 1}}">Próxima</a>
+            </li>
+        </ul>
+    </nav>
+</div>

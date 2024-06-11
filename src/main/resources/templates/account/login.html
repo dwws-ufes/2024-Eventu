@@ -1,0 +1,35 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layout/base_login}"
+     layout:fragment="content"
+     xmlns:th="http://www.thymeleaf.org">
+
+    <div class="d-flex align-items-center py-4">
+        <div class="form-signin w-100 m-auto">
+            <form name="f" th:action="@{/login}" method="post">
+                <h1 class="h3 mb-3 fw-normal">Informe os dados</h1>
+
+                <div th:if="${param.error}" class="alert alert-error">
+                    Usuário e senha inválidos.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    Você foi desconectado.
+                </div>
+                <div th:if="${param.registered}" class="alert alert-success">
+                    Login criado com sucesso.
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" name="username" placeholder="name@example.com">
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Senha">
+                    <label for="floatingPassword">Senha</label>
+                </div>
+
+                <button class="btn btn-primary w-100 py-2" type="submit">Entrar</button>
+                <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
+            </form>
+        </div>
+    </div>
+</div>

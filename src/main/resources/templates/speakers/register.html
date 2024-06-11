@@ -1,0 +1,60 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layout/base}"
+     layout:fragment="content"
+     xmlns:th="http://www.thymeleaf.org">
+
+    <form name="f" th:action="@{/speakers/register}" th:object="${speakerModel}" method="post">
+        <h1 class="h3 mt-3 mb-3 fw-normal">Informe os dados</h1>
+
+        <div th:if="${param.registered}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Palestrante cadastrado com sucesso.
+            <button type="button" class="btn-close" id="btnClose" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="input-group has-validation">
+                    <div class="form-floating is-invalid">
+                        <input type="text" class="form-control" id="name"
+                               th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+                               th:field="*{name}"/>
+                        <label for="name">Nome do Palestrante</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating is-invalid">
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="description"
+                                  rows="5"
+                                  th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
+                                  th:field="*{description}">
+                        </textarea>
+                        <label for="description">Descrição do palestrante</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
+    </form>
+</div>
+
+<script>
+    function fecharAlerta() {
+        setTimeout(function() {
+            var btn = document.getElementById('btnClose');
+            if(btn) btn.click();
+        }, 5000);
+    }
+    window.onload = fecharAlerta;
+</script>

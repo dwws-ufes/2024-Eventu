@@ -1,0 +1,166 @@
+<div xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layout/base}"
+     layout:fragment="content"
+     xmlns:th="http://www.thymeleaf.org">
+
+    
+    <a class="btn btn-info mb-3" href="/attractions/register_type">Tipos de atrações</a>
+    <a class="btn btn-info mb-3" href="/attractions/register_location">Locais</a>
+
+    <form name="f" th:action="@{/attractions/edit/{id}(id=${attractionModel.id})}" th:object="${attractionModel}" method="post">
+        <h1 class="h3 mb-3 fw-normal">Informe os dados</h1>
+        <input type="hidden" th:field="*{id}" />
+
+        <div th:if="${param.registered}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Atração cadastrada com sucesso.
+            <button type="button" class="btn-close" id="btnClose" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="input-group has-validation">
+                    <div class="form-floating is-invalid">
+                        <input type="text" class="form-control" id="name"
+                               th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+                               th:field="*{name}"
+                               th:value="*{name}"/>
+                        <label for="name">Título atração</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating is-invalid">
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="description"
+                                  rows="5"
+                                  th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
+                                  th:field="*{description}"
+                                  th:value="*{description}">
+                        </textarea>
+                        <label for="description">Descrição da atração</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select"
+                                id="attractionTypeId"
+                                th:field="*{attractionTypeId}">
+                            <option value="">Selecione...</option>
+                            <option th:each="attractionType : ${attractionTypes}" th:value="${attractionType.id}" th:text="${attractionType.name}" th:selected="${attractionType.id == attractionModel.attractionTypeId}"></option>
+                        </select>
+                        <label for="attractionTypeId">Tipo de Atração</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select h-auto"
+                                multiple 
+                                id="speakersIds"
+                                th:field="*{speakersIds}">
+                            <option th:each="speaker : ${speakers}" th:value="${speaker.id}" th:text="${speaker.name}" th:selected="${attractionModel.speakersIds.contains(speaker.id)}"></option>
+                        </select>
+                        <label for="speakerId">Palestrantes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary py-2" type="submit">Salvar</button>        
+    </form>
+    <hr>
+
+    <form name="f" th:action="@{/attractions/add_time/{id}(id=${attractionModel.id})}" th:object="${attractionTimeModel}" method="post">
+        <h2 class="h3 mb-3 fw-normal">Horários</h2>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <input type="date-local" class="form-control" id="start" th:field="*{start}" required/>
+                    <label for="start">Data</label>
+                    <div class="invalid-feedback">
+                        Por favor escolha uma Data
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <input type="time-local" class="form-control" id="start" th:field="*{start}" required/>
+                    <label for="start">Inicio</label>
+                    <div class="invalid-feedback">
+                        Por favor escolha um horário de inicio.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <input type="time-local" class="form-control" id="finish" th:field="*{finish}" required/>
+                    <label for="finish">Término</label>
+                    <div class="invalid-feedback">
+                        Por favor escolha um horário de término.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <select class="form-select" id="locationId" th:field="*{locationId}" required>
+                        <option value="">Selecione...</option>
+                        <option th:each="location : ${registeredLocations}" th:value="${location.id}" th:text="${location.name}"></option>
+                        </select>
+                        
+                    <label for="locationId">Local</label>
+                    <div class="invalid-feedback">
+                        Por favor selecione um Local
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary py-2" type="submit">Adicionar Horário</button>        
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Inicio</th>
+                <th>Fim</th>
+                <th>Local</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the registered AttractionTypes and display each one -->
+            <tr th:each="attractionTime : ${attractionModel.attractionTimes}">
+                <td th:text="${attractionTime.date}"></td>
+                <td th:text="${attractionTime.start}"></td>
+                <td th:text="${attractionTime.finish}"></td>
+                <td th:text="${attractionTime.location}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+</div>
+
+<script>
+    function fecharAlerta() {
+        setTimeout(function() {
+            var btn = document.getElementById('btnClose');
+            if(btn) btn.click();
+        }, 5000);
+    }
+    window.onload = fecharAlerta;
+</script>
