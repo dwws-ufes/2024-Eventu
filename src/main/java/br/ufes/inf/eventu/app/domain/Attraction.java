@@ -45,7 +45,7 @@ public class Attraction {
         joinColumns = @JoinColumn(name = "attraction_id"),
         inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
-    @Setter private Set<Speaker> speakers = new HashSet<>();
+    @Setter private List<Speaker> speakers = new ArrayList<>();
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

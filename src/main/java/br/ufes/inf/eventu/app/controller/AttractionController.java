@@ -126,7 +126,7 @@ public class AttractionController {
             var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
 
             attraction.setAttractionType(selectedAttractionType);
-            attraction.setSpeakers(new HashSet<>(speakers));
+            attraction.setSpeakers(speakers);
             attraction = attractionService.save(attraction);
 
             attributes.addAttribute("registered", "true");
@@ -148,7 +148,7 @@ public class AttractionController {
         attractionModel.setName(attraction.getName());
         attractionModel.setDescription(attraction.getDescription());
         attractionModel.setAttractionTypeId(attraction.getAttractionType().getId());
-        attractionModel.setSpeakersIds(new HashSet<Long>(attraction.getSpeakers().stream().map(s -> s.getId()).toList()));       
+        attractionModel.setSpeakersIds(attraction.getSpeakers().stream().map(s -> s.getId()).toList());       
         attractionModel.setAttachments(attraction.getAttachments());       
 
 
@@ -202,7 +202,7 @@ public class AttractionController {
             var selectedAttractionType = attractionTypeDAO.findById(attractionModel.getAttractionTypeId()).get();
 
             attraction.setAttractionType(selectedAttractionType);
-            attraction.setSpeakers(new HashSet<>(speakers));
+            attraction.setSpeakers(speakers);
             attraction = attractionService.save(attraction);
 
             attributes.addAttribute("registered", "true");

@@ -30,7 +30,7 @@ public class AttractionModel {
 
     private Long attractionTypeId;
 
-    private Set<Long> speakersIds;
+    private List<Long> speakersIds;
 
     private Set<File> attachments;
 
