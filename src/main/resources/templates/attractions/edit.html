@@ -88,7 +88,7 @@
         <input type="hidden" th:field="*{attractionId}" th:value="${attractionModel?.id}"/>
         <h2 class="h3 mb-3 fw-normal">Horários</h2>
         <div class="row mb-3">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-floating">
                     <input type="date" class="form-control" id="date" th:field="*{date}" required/>
                     <label for="date">Data</label>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-floating">
                     <input type="time" class="form-control" id="start" th:field="*{start}" required/>
                     <label for="start">Inicio</label>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-floating">
                     <input type="time" class="form-control" id="finish" th:field="*{finish}" required/>
                     <label for="finish">Término</label>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-floating">
                     <select class="form-select" id="locationId" th:field="*{locationId}" required>
                         <option value="">Selecione...</option>
@@ -143,11 +143,11 @@
         </thead>
         <tbody>
             <!-- Loop through the registered AttractionTypes and display each one -->
-            <tr th:each="attractionTime : ${attractionModel.attractionTimes}">
+            <tr th:each="attractionTime : ${attractionTimes}">
                 <td th:text="${attractionTime.date}"></td>
                 <td th:text="${attractionTime.start}"></td>
                 <td th:text="${attractionTime.finish}"></td>
-                <td th:text="${attractionTime.location}"></td>
+                <td th:text="${attractionTime.location.getName()}"></td>
             </tr>
         </tbody>
     </table>

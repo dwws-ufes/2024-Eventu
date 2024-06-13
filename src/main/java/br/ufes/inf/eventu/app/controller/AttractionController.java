@@ -150,7 +150,7 @@ public class AttractionController {
         attractionModel.setDescription(attraction.getDescription());
         attractionModel.setAttractionTypeId(attraction.getAttractionType().getId());
         attractionModel.setSpeakersIds(attraction.getSpeakers().stream().map(s -> s.getId()).toList());       
-        attractionModel.setAttachments(attraction.getAttachments());       
+        attractionModel.setAttachments(attraction.getAttachments());           
 
 
         model.addAttribute("title", "Editar atração");
@@ -171,8 +171,11 @@ public class AttractionController {
         .stream()
         .toList();
 
+        var attractionTimes = attraction.getAttractionTimes();
+
         model.addAttribute("registeredLocations", locations);
         model.addAttribute("attractionTypes", attractionTypes);
+        model.addAttribute("attractionTimes", attractionTimes);
         model.addAttribute("attractionTimeModel", new AttractionTimeModel());
         model.addAttribute("speakers", speakers);
 
