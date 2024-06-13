@@ -70,6 +70,7 @@ public class Initialization {
 
     public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository) throws Exception {
 
+
         var palestraAttractionNames = Arrays.asList(
                 "Palestra IOT",
                 "Palestra sobre Blockchain",
@@ -180,6 +181,9 @@ public class Initialization {
             "Patricia Dockhorn",
             "Victor E. Silva Souza",
             "Alberto Ferreira De Souza");
+        
+        if (speakerRepository.findAll().stream().anyMatch(x -> speakers.contains(x.getName())))
+            return;
 
         for (var item : speakers) {
             var speakerModel = new Speaker();
@@ -194,6 +198,10 @@ public class Initialization {
         var locations = Arrays.asList(
             "Teatro da Ufes",
             "CT XIII");
+        
+        if (locationRepository.findAll().stream().anyMatch(x -> locations.contains(x.getName())))
+            return;
+            
 
         for (var item : locations) {
             var locationModel = new Location();
