@@ -293,7 +293,7 @@ public class AttractionController {
             location.setDescription(locationModel.getDescription());
             locationService.save(location);
         } catch (Exception e) {
-            var msg = "Erro ao registrar tipo de atração";
+            var msg = "Erro ao registrar localizacao";
             if (e instanceof EventuException) msg = e.getMessage();
             bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
             return "attractions/register_location";
@@ -309,12 +309,15 @@ public class AttractionController {
             @Valid @ModelAttribute("attractionTimeModel") AttractionTimeModel attractionTimeModel,
             BindingResult bindingResult,
             Model model,
-            RedirectAttributes attributes) {
-
+            RedirectAttributes attributes)  throws Exception {
+        System.out.println("RECEBEU POST");
         model.addAttribute("title", "Cadastrar");
 
-        if (bindingResult.hasErrors())
-            return "attractions/edit";
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.hasErrors());
+            return "redirect:/attractions/edit/" + attractionId;
+        }
+            
 
         try {
             var time = new AttractionTime();
@@ -325,15 +328,20 @@ public class AttractionController {
             time.setAttraction(attractionDAO.findById(attractionId).get());
             attractionTimeService.save(time);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            
+            System.out.println(e);
             var msg = "Erro ao registrar tipo de atração";
-            if (e instanceof EventuException) msg = e.getMessage();
+            System.out.println(msg);
+            if (e instanceof EventuException){
+                msg = e.getMessage();       
+            } 
             bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
-            return "attractions/edit";
+            throw e;
+            //return "redirect:/attractions/edit/" + attractionId;
         }
 
         attributes.addAttribute("registered", "true");
-        return "redirect:attractions/edit/" + attractionId;
+        return "redirect:/attractions/edit/" + attractionId;
     }
 
 }
