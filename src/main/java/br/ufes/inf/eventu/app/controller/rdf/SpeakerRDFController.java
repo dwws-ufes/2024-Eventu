@@ -34,17 +34,15 @@ public class SpeakerRDFController {
         speakerResource.addProperty(FOAF.name, speaker.getName());
         speakerResource.addProperty(DC.description, speaker.getDescription());
 
-        // Link birthPlace to DBpedia if available
         if (speaker.getBirthplace() != null && !speaker.getBirthplace().isEmpty()) {
             String dbpediaUri = "http://dbpedia.org/resource/" + speaker.getBirthplace().replace(" ", "_");
             speakerResource.addProperty(model.createProperty("http://dbpedia.org/ontology/birthPlace"), 
                                         model.createResource(dbpediaUri));
         }
 
-        // Add attractions
         Property hasAttraction = model.createProperty(BASE_URI + "hasAttraction");
         speaker.getAttractions().forEach(attraction -> 
-            speakerResource.addProperty(hasAttraction, BASE_URI + "attractions/" + attraction.getId())
+            speakerResource.addProperty(hasAttraction, BASE_URI + "api/rdf/attractions/" + attraction.getId())
         );
 
         String rdfOutput = modelToString(model, "TURTLE");
