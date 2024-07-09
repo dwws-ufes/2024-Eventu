@@ -4,6 +4,7 @@ import br.ufes.inf.eventu.app.core.EventuException;
 import br.ufes.inf.eventu.app.domain.Speaker;
 import br.ufes.inf.eventu.app.model.SpeakerModel;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
+import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 import br.ufes.inf.eventu.app.services.interfaces.SpeakerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class SpeakerController {
 
     @Autowired
     private SpeakerService speakerService;
+
+    @Autowired
+    private LocationService locationService;
 
     @GetMapping("")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
@@ -51,6 +55,7 @@ public class SpeakerController {
     public String register(Model model) {
         model.addAttribute("title", "Cadastrar");
         model.addAttribute("speakerModel", new SpeakerModel());
+        model.addAttribute("states", locationService.retrieveLocationRDF());
 
         return "speakers/register";
     }
@@ -71,7 +76,7 @@ public class SpeakerController {
             var speaker = new Speaker();
             speaker.setName(speakerModel.getName());
             speaker.setDescription(speakerModel.getDescription());
-            speaker.setDescription(speakerModel.getDescription());
+            speaker.setBirthplace(speakerModel.getDescription());
             speakerService.save(speaker);
         } catch (Exception e) {
             var msg = "Erro ao atração";

@@ -36,8 +36,8 @@
                     </li>
 
                 </ul>
-                <form role="search">
-                    <input class="form-control" type="search" placeholder="Pesquisar" aria-label="Search">
+                <form action="/attractions" method="get" role="search">
+                    <input class="form-control" name="p" type="search" placeholder="Pesquisar" aria-label="Search">
                 </form>
                 <div class="text-end">
                     <a href="/account/logout" class="btn btn-outline me-2" sec:authorize="isAuthenticated()">Sair</a>

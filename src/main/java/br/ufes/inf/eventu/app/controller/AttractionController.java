@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,10 @@ public class AttractionController {
     private LocationService locationService;
 
     @GetMapping("")
-    public String index(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String index(
+            @RequestParam(value = "p", defaultValue = "") String pesquisa ,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            Model model) {
         model.addAttribute("title", "Eventos");
 
         int pageSize = 6;
@@ -72,6 +76,10 @@ public class AttractionController {
         var attractionsPaginated =  attractionDAO
                 .findAll()
                 .stream()
+                .sorted(Comparator.comparing(Attraction::getId))
+                .filter(x -> (pesquisa.isEmpty()
+                        || (x.getName().toLowerCase().contains(pesquisa.toLowerCase())
+                            || x.getDescription().toLowerCase().contains(pesquisa.toLowerCase()))))
                 .skip(startIndex)
                 .limit(endIndex - startIndex)
                 .toList();
