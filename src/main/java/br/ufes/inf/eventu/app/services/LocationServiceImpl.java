@@ -1,16 +1,21 @@
 package br.ufes.inf.eventu.app.services;
 
-import br.ufes.inf.eventu.app.domain.Location;
-import br.ufes.inf.eventu.app.persistence.LocationDAO;
-import br.ufes.inf.eventu.app.services.interfaces.LocationService;
-import org.apache.jena.query.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.RDFNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import br.ufes.inf.eventu.app.domain.Location;
+import br.ufes.inf.eventu.app.persistence.LocationDAO;
+import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -40,28 +45,13 @@ public class LocationServiceImpl implements LocationService {
                 PREFIX dbo: <http://dbpedia.org/ontology/>
                 PREFIX dbr: <http://dbpedia.org/resource/>
                 PREFIX dbp: <http://dbpedia.org/property/>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-                PREFIX yago: <http://dbpedia.org/class/yago/>
-                SELECT DISTINCT ?name WHERE {
-                    ?state a yago:WikicatStatesOfBrazil .
-                    OPTIONAL {
-                        ?state foaf:name ?label .
+                SELECT DISTINCT ?stateName WHERE {
+                        ?resource dbp:settlementType dbr:States_of_Brazil  .
+                        ?resource dbp:name ?name .
+                        FILTER (lang(?name ) = 'en')
                         BIND(
-                        REPLACE(
-                        REPLACE(
-                        REPLACE(
-                        REPLACE(
-                        REPLACE(
-                        REPLACE(?label, 
-                        "Estado de ", ""), 
-                        "Estado do ", ""), 
-                        "Estado da ", ""), 
-                        "Administrative Region of ", ""), 
-                        "Região Administrativa de ", ""), 
-                        "State of ", "") 
-                        AS ?name)
-                    }
+                        REPLACE(?name,"@en", "") 
+                        AS ?stateName)
                 }
                 ORDER BY ?name
                 """;
@@ -73,7 +63,7 @@ public class LocationServiceImpl implements LocationService {
             ResultSet results = qexec.execSelect();
             while (results.hasNext()) {
                 QuerySolution soln = results.nextSolution();
-                RDFNode label = soln.get("name");
+                RDFNode label = soln.get("stateName");
 
                 if(label == null) continue;
 
