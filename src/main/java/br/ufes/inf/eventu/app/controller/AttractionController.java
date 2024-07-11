@@ -1,5 +1,22 @@
 package br.ufes.inf.eventu.app.controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Comparator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import br.ufes.inf.eventu.app.core.EventuException;
 import br.ufes.inf.eventu.app.domain.Attraction;
 import br.ufes.inf.eventu.app.domain.AttractionTime;
@@ -11,26 +28,13 @@ import br.ufes.inf.eventu.app.model.AttractionTypeModel;
 import br.ufes.inf.eventu.app.model.LocationModel;
 import br.ufes.inf.eventu.app.persistence.AttractionDAO;
 import br.ufes.inf.eventu.app.persistence.AttractionTypeDAO;
-import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.persistence.LocationDAO;
+import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionService;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionTimeService;
 import br.ufes.inf.eventu.app.services.interfaces.AttractionTypeService;
 import br.ufes.inf.eventu.app.services.interfaces.LocationService;
 import jakarta.validation.Valid;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Comparator;
-import java.util.HashSet;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/attractions")
@@ -94,6 +98,7 @@ public class AttractionController {
     public String register(Model model) {
         model.addAttribute("title", "Cadastrar");
         model.addAttribute("attractionModel", new AttractionModel());
+        model.addAttribute("topics", attractionService.retrieveTopicsRDF());
 
         var attractionTypes = attractionTypeDAO
         .findAll()
@@ -128,7 +133,7 @@ public class AttractionController {
             var attraction = new Attraction();
             attraction.setName(attractionModel.getName());
             attraction.setDescription(attractionModel.getDescription());
-            attraction.setDescription(attractionModel.getDescription());
+            attraction.setTopic(attractionModel.getTopic());
 
             var speakers = speakerDAO.findAllById(attractionModel.getSpeakersIds());
 
@@ -156,13 +161,16 @@ public class AttractionController {
         attractionModel.setId(attraction.getId());
         attractionModel.setName(attraction.getName());
         attractionModel.setDescription(attraction.getDescription());
+        attraction.setTopic(attractionModel.getTopic());
         attractionModel.setAttractionTypeId(attraction.getAttractionType().getId());
         attractionModel.setSpeakersIds(attraction.getSpeakers().stream().map(s -> s.getId()).toList());       
         attractionModel.setAttachments(attraction.getAttachments());           
+        
 
 
         model.addAttribute("title", "Editar atração");
         model.addAttribute("attractionModel", attractionModel);
+        model.addAttribute("topics", attractionService.retrieveTopicsRDF());
 
         var attractionTypes = attractionTypeDAO
         .findAll()
