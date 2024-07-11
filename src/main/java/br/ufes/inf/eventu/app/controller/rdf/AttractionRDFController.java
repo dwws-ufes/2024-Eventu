@@ -1,7 +1,5 @@
 package br.ufes.inf.eventu.app.controller.rdf;
 
-import br.ufes.inf.eventu.app.persistence.AttractionDAO;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.sparql.vocabulary.FOAF;
@@ -14,8 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufes.inf.eventu.app.persistence.AttractionDAO;
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
-@RequestMapping("/api/rdf/attraction")
+@RequestMapping("/api/rdf/attractions")
 public class AttractionRDFController {
 
     @Autowired
@@ -24,30 +25,27 @@ public class AttractionRDFController {
     @Autowired
     private HttpServletRequest request;
 
-    private static final String BASE_URI = "https://eventu.inf.ufes.br/";
+    private static final String BASE_URI = "https://eventu.inf.ufes.br/api/rdf/";
     private static final String FOAF_NS = "http://xmlns.com/foaf/0.1/";
 
     @GetMapping("/{id}")
     public ResponseEntity<String> getAttractionRDF(@PathVariable Long id) {
-        String requestUrl = request.getRequestURL().toString();
-        String requestUri = request.getRequestURI();
-        String baseUrl = requestUrl.substring(0, requestUrl.length() - requestUri.length()) + "/";
 
         var attraction = attractionDAO.findById(id).orElse(null);
         if (attraction == null) {
             return ResponseEntity.notFound().build();
         }
 
-        var attractionUri = baseUrl + attraction.getId();
         var model = ModelFactory.createDefaultModel();
+        String attractionUri = BASE_URI + "attractions/" + attraction.getId();
         var attractionResource = model.createResource(attractionUri);
 
         attractionResource.addProperty(FOAF.name, attraction.getName());
         attractionResource.addProperty(DC.description, attraction.getDescription());
 
-        var hasAttraction = model.createProperty(baseUrl + "hasSpeakers");
+        var hasAttraction = model.createProperty(BASE_URI + "attractions/hasSpeakers");
         attraction.getSpeakers().forEach(x ->
-            attractionResource.addProperty(hasAttraction, baseUrl + "api/rdf/speakers/" + x.getId())
+            attractionResource.addProperty(hasAttraction, BASE_URI + "speakers/" + x.getId())
         );
 
         var rdfOutput = modelToString(model, "Turtle");

@@ -1,11 +1,17 @@
 package br.ufes.inf.eventu.app.controller.rdf;
 
-import org.springframework.web.bind.annotation.*;
-import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.vocabulary.FOAF;
-import org.apache.jena.vocabulary.*;
+import org.apache.jena.vocabulary.DC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.ufes.inf.eventu.app.domain.Speaker;
 import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
@@ -17,7 +23,7 @@ public class SpeakerRDFController {
     @Autowired
     private SpeakerDAO speakerRepository;
 
-    private static final String BASE_URI = "https://eventu.inf.ufes.br/";
+    private static final String BASE_URI = "https://eventu.inf.ufes.br/api/rdf/";
     private static final String FOAF_NS = "http://xmlns.com/foaf/0.1/";
 
     @GetMapping("/{id}")
@@ -28,7 +34,7 @@ public class SpeakerRDFController {
         }
 
         Model model = ModelFactory.createDefaultModel();
-        String speakerUri = BASE_URI + speaker.getId();
+        String speakerUri = BASE_URI + "speakers/" + speaker.getId();
         Resource speakerResource = model.createResource(speakerUri);
 
         speakerResource.addProperty(FOAF.name, speaker.getName());
@@ -40,9 +46,9 @@ public class SpeakerRDFController {
                                         model.createResource(dbpediaUri));
         }
 
-        Property hasAttraction = model.createProperty(BASE_URI + "hasAttraction");
+        Property hasAttraction = model.createProperty(BASE_URI + "speakers/hasAttraction");
         speaker.getAttractions().forEach(attraction -> 
-            speakerResource.addProperty(hasAttraction, BASE_URI + "api/rdf/attractions/" + attraction.getId())
+            speakerResource.addProperty(hasAttraction, BASE_URI + "attractions/" + attraction.getId())
         );
 
         String rdfOutput = modelToString(model, "TURTLE");
