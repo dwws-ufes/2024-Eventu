@@ -44,8 +44,10 @@ public class AttractionRDFController {
         attractionResource.addProperty(FOAF.name, attraction.getName());
         attractionResource.addProperty(DC.description, attraction.getDescription());
 
-        Property disciplineProperty = model.createProperty("http://dbpedia.org/property/discipline");
-        attractionResource.addProperty(disciplineProperty, attraction.getTopic());
+        if (attraction.getTopic() != null && !attraction.getTopic().isEmpty()) {
+            Property disciplineProperty = model.createProperty("http://dbpedia.org/property/discipline");
+            attractionResource.addProperty(disciplineProperty, attraction.getTopic());
+        }
 
         var hasAttraction = model.createProperty(BASE_URI + "attractions/hasSpeakers");
         attraction.getSpeakers().forEach(x ->
