@@ -5,6 +5,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.vocabulary.DC;
+import org.apache.jena.vocabulary.RDF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,7 @@ public class AttractionRDFController {
 
         attractionResource.addProperty(FOAF.name, attraction.getName());
         attractionResource.addProperty(DC.description, attraction.getDescription());
+        attractionResource.addProperty(RDF.type, "https://schema.org/Event");
 
         if (attraction.getTopic() != null && !attraction.getTopic().isEmpty()) {
             Property disciplineProperty = model.createProperty("http://dbpedia.org/property/discipline");
