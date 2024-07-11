@@ -20,6 +20,8 @@ public class Speaker {
 
     @Setter private String description;
 
+    @Setter private String birthplace;
+
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
         name = "attraction_speaker",

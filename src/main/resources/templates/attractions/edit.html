@@ -29,6 +29,24 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select" name="topic" id="topic"
+                                th:classappend="${#fields.hasErrors('topic') ? 'is-invalid' : ''}"
+                                th:field="*{topic}">
+                            <option th:each="option : ${topics}"
+                                    th:value="${option.topic}"
+                                    th:text="${option.label}">
+                            </option>
+                        </select>
+                        <label for="topic">Assunto</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('topic')}" th:errors="*{topic}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-md-12">

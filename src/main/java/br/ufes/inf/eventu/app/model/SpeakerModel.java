@@ -18,5 +18,9 @@ public class SpeakerModel {
 
     @NotBlank(message = "Descrição é obrigatório")
     @Size(min = 0, max = 255, message = "Descrição deve conter entre 0 a 255 caracteres")
-    private String description;    
+    private String description;
+
+    @NotBlank(message = "Estado de nascimento é obrigatório")
+    @Size(min = 0, max = 255, message = "Estado de nascimento deve conter entre 0 a 255 caracteres")
+    private String birthPlace;
 }
