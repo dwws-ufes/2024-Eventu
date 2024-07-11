@@ -69,8 +69,6 @@ public class Initialization {
     }
 
     public static void createAttraction(AttractionDAO repository, AttractionTypeDAO typeRepository) throws Exception {
-
-
         var palestraAttractionNames = Arrays.asList(
                 "Palestra IOT",
                 "Palestra sobre Blockchain",
@@ -176,7 +174,6 @@ public class Initialization {
     }
 
     public static void createSpeaker(SpeakerDAO speakerRepository) throws Exception {
-        
         var speakers = Arrays.asList(
             "Patricia Dockhorn",
             "Victor E. Silva Souza",
@@ -194,7 +191,6 @@ public class Initialization {
     }
 
     public static void createLocation(LocationDAO locationRepository) throws Exception {
-        
         var locations = Arrays.asList(
             "Teatro da Ufes",
             "CT XIII");

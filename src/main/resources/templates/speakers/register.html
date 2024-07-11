@@ -25,19 +25,35 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="input-group has-validation">
+                    <div class="form-floating">
+                        <select class="form-select" name="birthPlace" id="birthPlace"
+                                th:classappend="${#fields.hasErrors('birthPlace') ? 'is-invalid' : ''}"
+                                th:field="*{birthPlace}">
+                            <option th:each="state : ${states}"
+                                    th:value="${state.name}"
+                                    th:text="${state.name}">
+                            </option>
+                        </select>
+                        <label for="birthPlace">Selecione o estado</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('birthPlace')}" th:errors="*{birthPlace}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-12">
                 <div class="input-group has-validation">
                     <div class="form-floating is-invalid">
-                        <textarea type="text"
-                                  class="form-control"
-                                  id="description"
-                                  rows="5"
-                                  th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
-                                  th:field="*{description}">
-                        </textarea>
-                        <label for="description">Descrição do palestrante</label>
+                        <input type="text" class="form-control" id="description"
+                               th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
+                               th:field="*{description}"/>
+                        <label for="description">Descrição</label>
                     </div>
                     <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback">
                         error
@@ -45,6 +61,8 @@
                 </div>
             </div>
         </div>
+
+
         <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
     </form>
 </div>

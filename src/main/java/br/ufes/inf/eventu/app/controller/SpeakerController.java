@@ -1,18 +1,24 @@
 package br.ufes.inf.eventu.app.controller;
 
-import br.ufes.inf.eventu.app.core.EventuException;
-import br.ufes.inf.eventu.app.domain.Speaker;
-import br.ufes.inf.eventu.app.model.SpeakerModel;
-import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
-import br.ufes.inf.eventu.app.services.interfaces.SpeakerService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import br.ufes.inf.eventu.app.core.EventuException;
+import br.ufes.inf.eventu.app.domain.Speaker;
+import br.ufes.inf.eventu.app.model.SpeakerModel;
+import br.ufes.inf.eventu.app.persistence.SpeakerDAO;
+import br.ufes.inf.eventu.app.services.interfaces.LocationService;
+import br.ufes.inf.eventu.app.services.interfaces.SpeakerService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/speakers")
@@ -23,6 +29,9 @@ public class SpeakerController {
 
     @Autowired
     private SpeakerService speakerService;
+
+    @Autowired
+    private LocationService locationService;
 
     @GetMapping("")
     public String index(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
@@ -51,6 +60,7 @@ public class SpeakerController {
     public String register(Model model) {
         model.addAttribute("title", "Cadastrar");
         model.addAttribute("speakerModel", new SpeakerModel());
+        model.addAttribute("states", locationService.retrieveLocationRDF());
 
         return "speakers/register";
     }
@@ -71,12 +81,13 @@ public class SpeakerController {
             var speaker = new Speaker();
             speaker.setName(speakerModel.getName());
             speaker.setDescription(speakerModel.getDescription());
-            speaker.setDescription(speakerModel.getDescription());
+            speaker.setBirthplace(speakerModel.getBirthPlace());
             speakerService.save(speaker);
         } catch (Exception e) {
             var msg = "Erro ao atração";
             if (e instanceof EventuException) msg = e.getMessage();
             bindingResult.addError(new FieldError(bindingResult.getObjectName(), "name", msg));
+            System.out.println(msg);
             return "speakers/register";
         }
 
