@@ -46,6 +46,22 @@
             </div>
         </div>
 
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group has-validation">
+                    <div class="form-floating is-invalid">
+                        <input type="text" class="form-control" id="description"
+                               th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
+                               th:field="*{description}"/>
+                        <label for="description">Descrição</label>
+                    </div>
+                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback">
+                        error
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <button class="btn btn-primary py-2" type="submit">Cadastrar</button>        
     </form>
